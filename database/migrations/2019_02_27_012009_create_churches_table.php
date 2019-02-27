@@ -18,6 +18,7 @@ class CreateChurchesTable extends Migration
             $table->string('name');
             $table->string('alternate_name')->nullable();
             $table->string('parent_id')->default(0);
+            $table->integer('user_id');
             $table->integer('leader_id')->nullable();
             $table->integer('address_id')->nullable();
             $table->integer('profile_media_id')->nullable();
