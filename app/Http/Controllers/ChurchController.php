@@ -11,16 +11,21 @@ class ChurchController extends Controller
 {
     public function create(Request $request)
     {
+        $validationMessages = [
+            'required' => 'The :attribute field is required.',
+            'exists' => 'The specified :attribute field does not exist',
+            'integer' => 'The :attribute is of invalid type'
+        ];
         $validator = Validator::make(request()->all(), [
-            'name' => 'string|required',
-            'alternate_name' => 'string',
-            'slogan' => 'string',
-            'parent_id' => 'integer|exists:churches',
-            'leader_id' => 'integer | exists:users',
-            'address_id' => 'integer|exists:addresses',
-            'profile_media_id' => 'integer|exists:profile_media',
-            'description' => 'string'
-        ]);
+            'name' => 'string|required|max:255',
+            'alternate_name' => 'nullable|string',
+            'slogan' => 'nullable|string',
+            'parent_id' => 'nullable|integer|exists:churches,id',
+            'leader_id' => 'nullable|integer|exists:users,id',
+            'address_id' => 'nullable|integer|exists:addresses,id',
+            'profile_media_id' => 'nullable|integer|exists:profile_media,id',
+            'description' => 'nullable|string'
+        ], $validationMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
@@ -40,34 +45,28 @@ class ChurchController extends Controller
 
     public function update(Request $request)
     {
+        $validationMessages = [
+            'required' => 'The :attribute field is required.',
+            'exists' => 'The specified :attribute field does not exist',
+            'integer' => 'The :attribute is of invalid type'
+        ];
         $validator = Validator::make(request()->all(), [
-            'id' => 'integer|required|exists:churches',
+            'id' => 'integer|required|exists:churches,id',
             'name' => 'string|required',
-            'slogan' => 'string',
-            'parent_id' => 'integer|exists:churches',
-            'leader_id' => 'integer | exists:users',
-            'address_id' => 'integer|exists:addresses',
-            'profile_media_id' => 'integer|exists:profile_media',
-            'description' => 'string'
-        ]);
+            'slogan' => 'nullable|string',
+            'parent_id' => 'nullable|integer|exists:churches,id',
+            'leader_id' => 'nullable|integer|exists:users,id',
+            'address_id' => 'nullable|integer|exists:addresses,id',
+            'profile_media_id' => 'nullable|integer|exists:profile_media,id',
+            'description' => 'nullable|string'
+        ], $validationMessages);
+
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
         }
 
         $data = collect(request()->all())->toArray();
-
-        if ($data['oldpassword'] == null) {
-            $data = collect(request()->input())->except(['oldpassword', 'password', 'password_confirmation'])->toArray();
-        } else {
-            if (Hash::check($data['oldpassword'], auth()->guard('customer')->user()->password)) {
-                $data = collect(request()->input())->toArray();
-
-                $data['password'] = bcrypt($data['password']);
-            } else {
-                return response()->json('Old password does not match', 200);
-            }
-        }
 
         $result = $this->customer->update($data);
 
@@ -78,21 +77,24 @@ class ChurchController extends Controller
         }
     }
 
-    public function search(Request $request){
-      $validator = Validator::make(request()->all(), [
-          'q' => 'string|required'
-      ]);
+    public function search(Request $request)
+    {
+        $validator = Validator::make(request()->all(), [
+            'q' => 'string|required'
+        ]);
 
-      $q = $request->input('q');
+        $q = $request->input('q');
 
-      if ($validator->fails()) {
-          return response()->json($validator->messages(), 400);
-      }
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
 
 
-      return ;
+        return;
     }
 
-    public function get(Request $request){}
-    public function list(Request $request){}
+    public function get(Request $request)
+    { }
+    public function list(Request $request)
+    { }
 }
