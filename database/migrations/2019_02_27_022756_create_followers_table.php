@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventsTable extends Migration
+class CreateFollowersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('followers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->integer('user_id');
             $table->integer('church_id');
-            $table->dateTime('starting_at')->nullable();
-            $table->dateTime('ending_at')->nullable();
-            $table->integer('profile_media_id')->nullable();
+            $table->datetime('unfollowed_at')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('followers');
     }
 }

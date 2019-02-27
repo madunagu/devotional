@@ -15,6 +15,9 @@ class CreateHeirachiesTable extends Migration
     {
         Schema::create('heirachies', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('heirachy_id');
+            $table->integer('rank');
+            $table->string('position_name');
             $table->timestamps();
         });
     }

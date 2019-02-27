@@ -17,7 +17,9 @@ class CreateSocietiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('church_id');
-            $table->integer('profile_media_id');
+            $table->integer('parent_id')->nullable();
+            $table->boolean('closed')->default(true);
+            $table->integer('profile_media_id')->nullable();
             $table->timestamps();
         });
     }

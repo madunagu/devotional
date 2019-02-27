@@ -16,8 +16,8 @@ class CreateChurchesTable extends Migration
         Schema::create('churches', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('alternate_name');
-            $table->string('parent_id')->defaults(0);
+            $table->string('alternate_name')->nullable();
+            $table->string('parent_id')->default(0);
             $table->integer('leader_id')->nullable();
             $table->integer('address_id')->nullable();
             $table->integer('profile_media_id')->nullable();
