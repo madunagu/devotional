@@ -20,7 +20,7 @@ class CreateAddressesTable extends Migration
             $table->string('country');
             $table->string('state');
             $table->string('city');
-            $table->integer('postcode');
+            $table->integer('postal_code');
             $table->boolean('default_address')->default(0);
             $table->string('name')->nullable();
             $table->float('longitude')->nullable();

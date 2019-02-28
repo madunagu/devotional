@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHeirachiesTable extends Migration
+class CreateHeirachyGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateHeirachiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('heirachies', function (Blueprint $table) {
+        Schema::create('heirachy_groups', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('heirachy_group_id');
-            $table->integer('rank');
-            $table->string('position_name');
-            $table->string('position_slang')->nullable();
+            $table->string('name');
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateHeirachiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('heirachies');
+        Schema::dropIfExists('heirachy_groups');
     }
 }
