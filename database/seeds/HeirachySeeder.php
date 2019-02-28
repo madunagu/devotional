@@ -12,6 +12,7 @@ class HeirachySeeder extends Seeder
      */
     public function run()
     {
+      Heirachy::truncate();
         $heirachies = [[
           'heirachy_group_id'=>'1',
           'rank' => '1',

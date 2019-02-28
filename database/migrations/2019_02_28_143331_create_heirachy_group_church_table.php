@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHeirachyUserTable extends Migration
+class CreateHeirachyGroupChurchTable extends Migration
 {
     /**
      * Run the migrations.
@@ -28,6 +28,6 @@ class CreateHeirachyUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('heirachy_user');
+        Schema::dropIfExists('heirachy_group_church');
     }
 }
