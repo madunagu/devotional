@@ -23,7 +23,7 @@ class CreateChurchesTable extends Migration
             $table->integer('address_id')->nullable();
             $table->integer('profile_media_id')->nullable();
             $table->string('slogan')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

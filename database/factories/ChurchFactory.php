@@ -7,8 +7,8 @@ $factory->define(Church::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'alternate_name' => $faker->name,
-        'user_id' => $faker->numberBetween(0, 1),
-        'address_id' =>  $faker->numberBetween(0, 1),
+        'user_id' => 1,
+        'address_id' => 1,
         'description' => $faker->paragraph,
         'slogan' => $faker->sentence,
     ];

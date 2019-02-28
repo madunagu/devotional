@@ -17,8 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/churches','ChurchController@list');
-Route::middleware('auth:api')->post('/churches','ChurchController@create');
-Route::middleware('auth:api')->get('/churches/:id','ChurchController@get');
-Route::middleware('auth:api')->put('/churches/:id','ChurchController@update');
-Route::middleware('auth:api')->delete('/churches/:id','ChurchController@delete');
+Route::get('/churches','ChurchController@list');
+Route::post('/churches','ChurchController@create');
+Route::get('/churches/{id}','ChurchController@get');
+Route::put('/churches/{id}','ChurchController@update');
+Route::delete('/churches/{id}','ChurchController@delete');

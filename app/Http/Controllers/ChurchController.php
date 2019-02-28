@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Church;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
+use App\Church;
+use App\Http\Resources\ChurchCollection;
 
 class ChurchController extends Controller
 {
@@ -32,25 +34,27 @@ class ChurchController extends Controller
         }
 
         $data = collect(request()->all())->toArray();
-        $data['user_id'] = Auth::user()->id;
+        //$data['user_id'] = Auth::user()->id;
+        $data['user_id'] = 1;
         $result = Church::create($data);
 
         if ($result) {
-            return response()->json(true, 200);
+            return response()->json(['data'=>true], 201);
         } else {
-            return response()->json(false, 200);
+            return response()->json(false, 500);
         }
     }
 
 
     public function update(Request $request)
     {
+        $id = $request->route('id');
         $validationMessages = [
             'required' => 'The :attribute field is required.',
             'exists' => 'The specified :attribute field reference id does not exist',
             'integer' => 'The :attribute is of invalid type'
         ];
-        $validator = Validator::make(request()->all(), [
+        $validator = Validator::make($request->all(), [
             'id' => 'integer|required|exists:churches,id',
             'name' => 'string|required',
             'slogan' => 'nullable|string',
@@ -66,9 +70,11 @@ class ChurchController extends Controller
             return response()->json($validator->messages(), 400);
         }
 
-        $data = collect(request()->all())->toArray();
+        $data = collect($request->all())->toArray();
 
-        $result = $this->customer->update($data);
+        $church = Church::find($id);
+
+        $result = $church->update($data);
 
         if ($result) {
             return response()->json(true, 200);
@@ -93,7 +99,7 @@ class ChurchController extends Controller
 
     public function get(Request $request)
     {
-        $id = (int)$request->input('id');
+        $id = (int)$request->route('id');
         if ($church = Church::find($id)) {
             return response()->json([
                 'data' => $church
@@ -104,6 +110,7 @@ class ChurchController extends Controller
             ], 404);
         }
     }
+
     public function list(Request $request)
     {
         $query = $request['q'];
@@ -113,10 +120,12 @@ class ChurchController extends Controller
         $data = new ChurchCollection($churches);
         return response()->json($data);
     }
+
     public function delete(Request $request)
     {
-        $id = (int)$request->input('id');
-        if (Church::find($id)->delete()) {
+        $id = (int)$request->route('id');
+        if ($church = Church::find($id)) {
+            $church->delete();
             return response()->json([
                 'data' => true
             ], 200);
