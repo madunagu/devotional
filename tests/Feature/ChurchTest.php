@@ -6,7 +6,9 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ChurchTest extends TestCase
+use App\Church;
+
+class ChurchTest extends CrudTest
 {
 
      /**
@@ -14,14 +16,14 @@ class ChurchTest extends TestCase
      *
      * @var class
      */
-    protected $model = App\Church::class;
+    protected $model = Church::class;
     /**
      * The endpoint to query in the API
      * e.g = /api/v1/<endpoint>
      *
      * @var string
      */
-    protected $endpoint = 'church';
+    protected $endpoint = 'churches';
     /**
      * Any additional "states" to add to factory
      *
@@ -37,6 +39,6 @@ class ChurchTest extends TestCase
      * @var array
      */
     protected $store = [
-        'category' => '1'
+
     ];
 }

@@ -19,7 +19,8 @@ abstract class CrudTest extends TestCase
     {
         if($this->states)
         {
-            return factory($this->model)->states($this->states)->create();
+            //return factory($this->model)->states($this->states)->create();
+            return factory($this->model)->create();
         }
 
         return factory($this->model)->create();
@@ -33,9 +34,9 @@ abstract class CrudTest extends TestCase
      */
     public function testIndex()
     {
-        $response = $this->json('GET', "api/v1/{$this->endpoint}");
+        $response = $this->json('GET', "api/{$this->endpoint}");
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJson([
                 'data' => true
             ]);
@@ -52,11 +53,11 @@ abstract class CrudTest extends TestCase
         // Create a test shop with filled out fields
         $activity = $this->createPost();
         // Check the API for the new entry
-        $response = $this->json('GET', "api/v1/{$this->endpoint}/{$activity->id}");
+        $response = $this->json('GET', "api/{$this->endpoint}/{$activity->id}");
         // Delete the test shop
         $activity->delete();
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJson([
                 'data' => true
             ]);
@@ -78,7 +79,7 @@ abstract class CrudTest extends TestCase
         {
             $activity = array_merge($activity, $this->store);
         }
-        $response = $this->json('POST', "api/v1/{$this->endpoint}/", $activity);
+        $response = $this->json('POST', "api/{$this->endpoint}/", $activity);
         ($this->model)::destroy($activity['id']);
         $response
             ->assertStatus(201)
@@ -96,7 +97,7 @@ abstract class CrudTest extends TestCase
     public function testDestroy()
     {
         $activity = $this->createPost();
-        $response = $this->json('DELETE', "api/v1/{$this->endpoint}/{$activity->id}");
+        $response = $this->json('DELETE', "api/{$this->endpoint}/{$activity->id}");
         $response
             ->assertStatus(200);
     }

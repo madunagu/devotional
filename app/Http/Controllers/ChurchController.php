@@ -13,7 +13,7 @@ class ChurchController extends Controller
     {
         $validationMessages = [
             'required' => 'The :attribute field is required.',
-            'exists' => 'The specified :attribute field does not exist',
+            'exists' => 'The specified :attribute reference id does not exist',
             'integer' => 'The :attribute is of invalid type'
         ];
         $validator = Validator::make(request()->all(), [
@@ -28,7 +28,7 @@ class ChurchController extends Controller
         ], $validationMessages);
 
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
+            return response()->json($validator->messages(), 422);
         }
 
         $data = collect(request()->all())->toArray();
@@ -47,7 +47,7 @@ class ChurchController extends Controller
     {
         $validationMessages = [
             'required' => 'The :attribute field is required.',
-            'exists' => 'The specified :attribute field does not exist',
+            'exists' => 'The specified :attribute field reference id does not exist',
             'integer' => 'The :attribute is of invalid type'
         ];
         $validator = Validator::make(request()->all(), [
@@ -80,7 +80,7 @@ class ChurchController extends Controller
     public function search(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'q' => 'string|required'
+            'q' => 'nullable|string'
         ]);
 
         $q = $request->input('q');
@@ -88,13 +88,42 @@ class ChurchController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
         }
-
-
         return;
     }
 
     public function get(Request $request)
-    { }
+    {
+        $id = (int)$request->input('id');
+        if ($church = Church::find($id)) {
+            return response()->json([
+                'data' => $church
+            ], 200);
+        } else {
+            return response()->json([
+                'data' => false
+            ], 404);
+        }
+    }
     public function list(Request $request)
-    { }
+    {
+        $query = $request['q'];
+        //here insert search parameters and stuff
+        $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
+        $churches = Church::paginate($length);
+        $data = new ChurchCollection($churches);
+        return response()->json($data);
+    }
+    public function delete(Request $request)
+    {
+        $id = (int)$request->input('id');
+        if (Church::find($id)->delete()) {
+            return response()->json([
+                'data' => true
+            ], 200);
+        } else {
+            return response()->json([
+                'data' => false
+            ], 404);
+        }
+    }
 }
