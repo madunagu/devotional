@@ -22,3 +22,10 @@ Route::post('/churches','ChurchController@create');
 Route::get('/churches/{id}','ChurchController@get');
 Route::put('/churches/{id}','ChurchController@update');
 Route::delete('/churches/{id}','ChurchController@delete');
+
+Route::get('/addresses','AddressController@list');
+Route::post('/addresses','AddressController@create');
+Route::get('/addresses/{id}','AddressController@get');
+Route::put('/addresses/{id}','AddressController@update');
+Route::delete('/addresses/{id}','AddressController@delete');
+

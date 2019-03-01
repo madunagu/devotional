@@ -5,15 +5,16 @@ use App\Address;
 
 $factory->define(Address::class, function (Faker $faker) {
   return [
-      'id' => $faker->uuid,
+      'id' => null,
       'address1' => $faker->streetAddress,
       'address1' => $faker->streetAddress,
+      'user_id'=> 1,
       'country' => $faker->country,
       'state' => $faker->state,
       'city' => $faker->city,
       'postal_code' => $faker->postcode,
       'name' => $faker->name,
-      'latitude' => $faker->latitude(-90, 90),
+      'lattitude' => $faker->latitude(-90, 90),
       'longitude' => $faker->longitude(-180, 180),
   ];
 });

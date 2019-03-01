@@ -27,8 +27,8 @@ class AddressController extends Controller
         }
 
         $data = collect($request->all())->toArray();
-        //$data['user_id'] = Auth::user()->id;
-        $data['user_id'] = 1;
+        $data['user_id'] = Auth::user()->id;
+
         $result = Address::create($data);
         //obtain longitude and lattitude if they werent set
         if (!$result->longitude || !$result->lattitude) {
@@ -64,8 +64,7 @@ class AddressController extends Controller
         }
 
         $data = collect($request->all())->toArray();
-        //$data['user_id'] = Auth::user()->id;
-        $data['user_id'] = 1;
+        $data['user_id'] = Auth::user()->id;
         $result = Address::create($data);
         //obtain longitude and lattitude if they werent set
         if (!$result->longitude || !$result->lattitude) {

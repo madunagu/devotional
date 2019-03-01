@@ -34,8 +34,7 @@ class ChurchController extends Controller
         }
 
         $data = collect(request()->all())->toArray();
-        //$data['user_id'] = Auth::user()->id;
-        $data['user_id'] = 1;
+        $data['user_id'] = Auth::user()->id;
         $result = Church::create($data);
 
         if ($result) {
@@ -48,6 +47,8 @@ class ChurchController extends Controller
 
     public function update(Request $request)
     {
+        //first check if the updater is the creating user here
+
         $id = $request->route('id');
         $validationMessages = [
             'required' => 'The :attribute field is required.',
@@ -81,20 +82,6 @@ class ChurchController extends Controller
         } else {
             return response()->json(false, 200);
         }
-    }
-
-    public function search(Request $request)
-    {
-        $validator = Validator::make(request()->all(), [
-            'q' => 'nullable|string|min:3'
-        ]);
-
-        $q = $request->input('q');
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
-        }
-        return;
     }
 
     public function get(Request $request)

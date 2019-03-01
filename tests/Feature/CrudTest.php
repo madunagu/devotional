@@ -38,7 +38,7 @@ abstract class CrudTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'data' => true
+                'data' => []
             ]);
     }
 

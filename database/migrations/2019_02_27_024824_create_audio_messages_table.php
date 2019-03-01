@@ -22,10 +22,12 @@ class CreateAudioMessagesTable extends Migration
             $table->integer('author_id')->nullable();
             $table->integer('uploader_id')->nullable();
             $table->integer('church_id')->nullable();
-            $table->string('size')->nullable();
-            $table->string('length')->nullable();
-            $table->string('cover_url')->nullable();
-            $table->string('language')->nullable();
+            $table->bigInteger('size')->nullable();
+            $table->integer('length')->nullable();
+            $table->integer('profile_media_id')->nullable();
+            $table->string('language')->default('english');
+            $table->dateTime('recorded_at')->nullable();
+            $table->integer('address_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
