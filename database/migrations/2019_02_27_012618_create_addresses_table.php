@@ -26,6 +26,7 @@ class CreateAddressesTable extends Migration
             $table->string('name')->nullable();
             $table->float('longitude',4,15)->nullable();
             $table->float('lattitude',4,15)->nullable();
+            $table->boolean('parseable')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
