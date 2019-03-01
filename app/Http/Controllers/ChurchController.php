@@ -117,7 +117,7 @@ class ChurchController extends Controller
             'q' => 'nullable|string|min:3'
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
+            return response()->json($validator->messages(), 422);
         }
 
         $query = $request['q'];
@@ -125,7 +125,7 @@ class ChurchController extends Controller
         $hq = $request['hq'];
         // parent_id  is set when searching through the children of a particular mother church
         $parent_id = (int)$request['parent_id'];
-        $churches = Church::where('id','>','0')->with('addresses')->with('profile_media');
+        $churches = Church::where('churches.id','>','0')->with('addresses')->with('profile_media');
         if($query){
             $churches = $churches->search($query);
         }

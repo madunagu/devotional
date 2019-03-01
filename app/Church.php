@@ -25,10 +25,10 @@ class Church extends Model
          * @var array
          */
         'columns' => [
-            'church.name' => 10,
-            'church.alternate_name' => 5,
-            'church.slogan' => 2,
-            'church.description' => 1,
+            'churches.name' => 10,
+            'churches.alternate_name' => 5,
+            'churches.slogan' => 2,
+            'churches.description' => 1,
         ],
         'joins' => [
             'addresses' => ['address_id','addresses.id'],
