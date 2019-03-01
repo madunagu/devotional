@@ -86,7 +86,7 @@ class ChurchController extends Controller
     public function search(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'q' => 'nullable|string'
+            'q' => 'nullable|string|min:3'
         ]);
 
         $q = $request->input('q');
@@ -113,10 +113,33 @@ class ChurchController extends Controller
 
     public function list(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'q' => 'nullable|string|min:3'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
+
         $query = $request['q'];
+        //hq is true when searching for only mother churches
+        $hq = $request['hq'];
+        // parent_id  is set when searching through the children of a particular mother church
+        $parent_id = (int)$request['parent_id'];
+        $churches = Church::where('id','>','0')->with('addresses')->with('profile_media');
+        if($query){
+            $churches = $churches->search($query);
+        }
+
+        if($hq){
+            $churches->where('parent_id','0');
+        }
+
+        if($parent_id){
+            $churches->where('parent_id',$parent_id);
+        }
         //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
-        $churches = Church::paginate($length);
+        $churches = $churches->paginate($length);
         $data = new ChurchCollection($churches);
         return response()->json($data);
     }
