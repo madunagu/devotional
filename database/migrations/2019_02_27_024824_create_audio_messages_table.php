@@ -26,6 +26,7 @@ class CreateAudioMessagesTable extends Migration
             $table->string('length')->nullable();
             $table->string('cover_url')->nullable();
             $table->string('language')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

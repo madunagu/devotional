@@ -24,6 +24,8 @@ class CreateChurchesTable extends Migration
             $table->integer('profile_media_id')->nullable();
             $table->string('slogan')->nullable();
             $table->text('description')->nullable();
+            $table->boolean('verified')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

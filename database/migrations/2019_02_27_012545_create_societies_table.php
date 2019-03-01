@@ -20,6 +20,7 @@ class CreateSocietiesTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->boolean('closed')->default(true);
             $table->integer('profile_media_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
