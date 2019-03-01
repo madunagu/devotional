@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class AudioMessage extends Model
 {
@@ -24,6 +27,7 @@ class AudioMessage extends Model
         'joins' => [
             'addresses' => ['address_id','addresses.id'],
             'profile_media' => ['profile_media_id','profile_media.id'],
+            'church' => ['church_id','churches.id'],
         ],
      ];
 

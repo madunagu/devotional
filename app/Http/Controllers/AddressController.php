@@ -62,15 +62,17 @@ class AddressController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
+        $id = $request->route('id');
 
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
-        $result = Address::create($data);
+        $result = Address::find($id);
         //obtain longitude and lattitude if they werent set
         if (!$result->longitude || !$result->lattitude) {
             //que set lattitude and longitude event
             $this->find_address_geolocation($result);
         }
+        $result = $result->update($data);
         if ($result) {
             return response()->json(['data'=>true], 201);
         } else {
