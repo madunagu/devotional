@@ -19,7 +19,10 @@ class CreateEventsTable extends Migration
             $table->integer('church_id');
             $table->dateTime('starting_at')->nullable();
             $table->dateTime('ending_at')->nullable();
+            $table->integer('address_id')->nullable();
+            $table->integer('heirachy_group_id')->nullable();
             $table->integer('profile_media_id')->nullable();
+            $table->integer('user_id');
             $table->softDeletes();
             $table->timestamps();
         });

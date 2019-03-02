@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHeirachyGroupChurchTable extends Migration
+class CreateHeirachyUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateHeirachyGroupChurchTable extends Migration
      */
     public function up()
     {
-        Schema::create('heirachygroup_church', function (Blueprint $table) {
+        Schema::create('heirachy_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('heirachy_group_id');
-            $table->integer('church_id');
+            $table->integer('heirachy_id');
+            $table->integer('user_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('bio')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateHeirachyGroupChurchTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('heirachy_group_church');
+        Schema::dropIfExists('heirachy_user');
     }
 }

@@ -19,6 +19,8 @@ class CreateHeirachiesTable extends Migration
             $table->integer('rank');
             $table->string('position_name');
             $table->string('position_slang')->nullable();
+            $table->string('person_name');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
