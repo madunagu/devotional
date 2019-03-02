@@ -59,7 +59,6 @@ class SocietyController extends Controller
         $data['user_id'] = Auth::user()->id;
         $result = Society::find($id);
         $result->update($data);
-        //obtain longitude and lattitude if they werent set
 
         if ($result) {
             return response()->json(['data'=>true], 201);

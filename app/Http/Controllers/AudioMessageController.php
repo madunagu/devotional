@@ -32,7 +32,7 @@ class AudioMessageController extends Controller
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
         $result = AudioMessage::create($data);
-        //obtain length,size and  and lattitude if they werent set
+        //obtain length,size and details of audio 
         $result = $this->getTrackDetails($result);
         $result= $this->getTrackFullText($result);
 

@@ -11,5 +11,5 @@ class Address extends Model
 {
     use SearchableTrait, SoftDeletes;
 
-    protected $fillable = ['address1','address2','country','state','city','postal_code','name','longitude','lattitude'];
+    protected $fillable = ['address1','address2','country','state','city','postal_code','name','longitude','latitude'];
 }

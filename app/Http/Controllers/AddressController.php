@@ -19,7 +19,7 @@ class AddressController extends Controller
             'default_address' => 'nullable|boolean',
             'name' =>  'nullable|string|max:255',
             'longitude' => 'nullable|float|max:255',
-            'lattitude' => 'nullable|float|max:255'
+            'latitude' => 'nullable|float|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -30,9 +30,9 @@ class AddressController extends Controller
         $data['user_id'] = Auth::user()->id;
 
         $result = Address::create($data);
-        //obtain longitude and lattitude if they werent set
-        if (!$result->longitude || !$result->lattitude) {
-            //que set lattitude and longitude event
+        //obtain longitude and latitude if they werent set
+        if (!$result->longitude || !$result->latitude) {
+            //que set latitude and longitude event
             $this->find_address_geolocation($result);
         }
 
@@ -56,7 +56,7 @@ class AddressController extends Controller
             'default_address' => 'nullable|boolean',
             'name' =>  'nullable|string|max:255',
             'longitude' => 'nullable|float|max:255',
-            'lattitude' => 'nullable|float|max:255'
+            'latitude' => 'nullable|float|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -67,9 +67,9 @@ class AddressController extends Controller
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
         $result = Address::find($id);
-        //obtain longitude and lattitude if they werent set
-        if (!$result->longitude || !$result->lattitude) {
-            //que set lattitude and longitude event
+        //obtain longitude and latitude if they werent set
+        if (!$result->longitude || !$result->latitude) {
+            //que set latitude and longitude event
             $this->find_address_geolocation($result);
         }
         $result = $result->update($data);
