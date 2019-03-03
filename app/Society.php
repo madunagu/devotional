@@ -32,4 +32,13 @@ class Society extends Model
 
      protected $fillable = ['name','church_id','parent_id','closed','profile_media_id','user_id','heirachy_group_id','description'];
 
+     public function profileMedia()
+     {
+         return $this->hasOne('App\ProfileMedia');
+     }
+
+     public function heirachyGroup()
+     {
+         return $this->hasOne('App\HeirachyGroup');
+     }
 }

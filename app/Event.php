@@ -41,20 +41,20 @@ class Event extends Model
 
     public function addresses()
     {
-        return $this->hasOne('Address');
+        return $this->hasOne('App\Address');
     }
 
     public function profileMedia()
     {
-        return $this->hasOne('ProfileMedia');
+        return $this->hasOne('App\ProfileMedia');
     }
 
     public function church()
     {
-        return $this->hasOne('Church');
+        return $this->hasOne('App\Church');
     }
 
     public function heirachyGroup(){
-        return $this->hasOne('HeirachyGroup');
+        return $this->hasOne('App\HeirachyGroup');
     }
 }

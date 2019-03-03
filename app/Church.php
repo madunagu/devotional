@@ -40,11 +40,16 @@ class Church extends Model
 
     public function addresses()
     {
-        return $this->hasMany('Address');
+        return $this->hasMany('App\Address');
     }
 
-    public function profile_media()
+    public function profileMedia()
     {
-        return $this->hasOne('ProfileMedia');
+        return $this->hasOne('App\ProfileMedia');
+    }
+    
+    public function heirachyGroup()
+    {
+        return $this->hasOne('App\HeirachyGroup');
     }
 }
