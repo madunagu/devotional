@@ -27,7 +27,7 @@ class AudioMessage extends Model
         'joins' => [
             'addresses' => ['address_id','addresses.id'],
             'profile_media' => ['profile_media_id','profile_media.id'],
-            'church' => ['church_id','churches.id'],
+            'churches' => ['church_id','churches.id'],
         ],
      ];
 

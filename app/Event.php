@@ -44,7 +44,7 @@ class Event extends Model
         return $this->hasOne('Address');
     }
 
-    public function profile_media()
+    public function profileMedia()
     {
         return $this->hasOne('ProfileMedia');
     }
@@ -54,7 +54,7 @@ class Event extends Model
         return $this->hasOne('Church');
     }
 
-    public function heirachy(){
-        return $this->hasOne('Heirachy');
+    public function heirachyGroup(){
+        return $this->hasOne('HeirachyGroup');
     }
 }

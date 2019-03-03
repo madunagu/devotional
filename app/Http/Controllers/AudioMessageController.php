@@ -155,7 +155,7 @@ class AudioMessageController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioMessage::where('audio_messages.id', '>', '0')->with('church')->with('recorder');
+        $audia = AudioMessage::where('audio_messages.id', '>', '0')->with('churches')->with('recorder');
         if ($query) {
             $audia = $audia->search($query);
         }
