@@ -17,6 +17,7 @@ class CreateHeirachyGroupsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('description');
+            $table->integer('user_id');
             $table->softDeletes();
             $table->timestamps();
         });

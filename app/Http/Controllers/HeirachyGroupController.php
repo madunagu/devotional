@@ -5,21 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 
-use App\Event;
-use App\Http\Resources\EventCollection;
-use App\Heirachy;
+use App\HeirachyGroup;
 
-class HeirachyController extends Controller
+class HeirachyGroupController extends Controller
 {
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'heirachy_group_id' => 'integer|exists:heirachy_groups,id',
-            'rank' => 'nullable|integer',
-            'position_name'=> 'string|max:255',
-            'position_slang' => 'nullable|string|max:255',
-            'person_name' => 'nullable|string|max:255',
-            'user_id' => 'nullable|integer|exists:users,id' //TODO: add required if to this
+            'name' => 'string|required|max:255',
+            'description'=> 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -27,7 +21,7 @@ class HeirachyController extends Controller
         }
 
         $data = collect($request->all())->toArray();
-        $result = Heirachy::create($data);
+        $result = HeirachyGroup::create($data);
         //create event emmiter or reminder or notifications for those who may be interested
 
         if ($result) {
@@ -39,13 +33,9 @@ class HeirachyController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'integer|required|exists:heirachies,id',
-            'heirachy_group_id' => 'integer|exists:heirachy_groups,id',
-            'rank' => 'nullable|integer',
-            'position_name'=> 'string|max:255',
-            'position_slang' => 'nullable|string|max:255',
-            'person_name' => 'nullable|string|max:255',
-            'user_id' => 'nullable|integer|exists:users,id' //TODO: add required if to this
+            'id' => 'integer|required|exists:heirachy_groups,id',
+            'name' => 'string|required|max:255',
+            'description'=> 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +44,7 @@ class HeirachyController extends Controller
 
         $data = collect($request->all())->toArray();
         $id = $request->route('id');
-        $result = Heirachy::find($id);
+        $result = HeirachyGroup::find($id);
         //update result
         $result = $result->update($data);
 
@@ -69,9 +59,9 @@ class HeirachyController extends Controller
     public function get(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($heirachy = Heirachy::find($id)) {
+        if ($heirachyGroup = HeirachyGroup::find($id)) {
             return response()->json([
-            'data' => $heirachy
+            'data' => $heirachyGroup
         ], 200);
         } else {
             return response()->json([
@@ -84,26 +74,19 @@ class HeirachyController extends Controller
     {
         $validator = Validator::make($request->all(), [
         'q' => 'nullable|string|min:3',
-        'heirachy_group_id' => 'nullable|integer|exists:heirachy_groups,id'
     ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
 
         $query = $request['q'];
-        $heirachy_group_id = (int)$request['heirachy_group_id'];
-        $heirachies = Heirachy::where('heirachies.id', '>', '0');
+        $heirachy_groups = Heirachy::where('heirachy_groups.id', '>', '0')->with('heirachies');
         if ($query) {
-            $heirachies = $heirachies->search($query);
-        }
-        //getting heirachies for just a particular group id
-        // which is mainly the default implementation
-        if ($heirachy_group_id) {
-            $heirachies = $heirachies->where('heirachy_group_id', $heirachy_group_id);
+            $heirachy_groups = $heirachy_groups->search($query);
         }
         //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
-        $data = $heirachies->paginate($length);
+        $data = $heirachy_groups->paginate($length);
        // $data = new EventCollection($events);
         return response()->json($data);
     }
@@ -112,8 +95,8 @@ class HeirachyController extends Controller
     public function delete(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($heirachy = Heirachy::find($id)) {
-            $heirachy->delete();
+        if ($heirachy_group = HeirachyGroup::find($id)) {
+            $heirachy_group->delete();
             return response()->json([
             'data' => true
         ], 200);
