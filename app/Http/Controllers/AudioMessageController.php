@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
+
+use Google\Cloud\Speech\V1\SpeechClient;
+use Google\Cloud\Speech\V1\RecognitionAudio;
+use Google\Cloud\Speech\V1\RecognitionConfig;
+use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
+
 use App\AudioMessage;
 use App\Http\Resources\AudioCollection;
 
 class AudioMessageController extends Controller
 {
+    public $shouldTransrcibe = false;
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -32,7 +41,7 @@ class AudioMessageController extends Controller
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
         $result = AudioMessage::create($data);
-        //obtain length,size and details of audio 
+        //obtain length,size and details of audio
         $result = $this->getTrackDetails($result);
         $result= $this->getTrackFullText($result);
 
@@ -51,10 +60,35 @@ class AudioMessageController extends Controller
         return $audio;
     }
 
-    public function getTrackFullText(AudioMessage $audio): AudioMessage {
-        //connect to google
-        //change audio to text
+    public function getTrackFullText(AudioMessage $audio): AudioMessage
+    {
+        if ($this->shouldTransrcibe) {
+            //connect to google
+            $content = file_get_contents($audio->src_url);
+            $googleAudio = (new RecognitionAudio())->setContent($content);
+
+            # The audio file's encoding, sample rate and language
+            $config = new RecognitionConfig([
+            'encoding' => AudioEncoding::LINEAR16,
+            'sample_rate_hertz' => 32000,
+            'language_code' => 'en-US'
+        ]);
+
+            # Instantiates a client
+            $client = new SpeechClient();
+            # Detects speech in the audio file
+            $response = $client->recognize($config, $googleAudio);
+            # Print most likely transcription
+            foreach ($response->getResults() as $result) {
+                $alternatives = $result->getAlternatives();
+                $mostLikely = $alternatives[0];
+                $transcript = $mostLikely->getTranscript();
+                printf('Transcript: %s' . PHP_EOL, $transcript);
+            }
+            $client->close();
+            //change audio to text
         //save it then return object
+        }
         return $audio;
     }
 
@@ -121,8 +155,8 @@ class AudioMessageController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioMessage::where('audio_messages.id','>','0')->with('church')->with('recorder');
-        if($query){
+        $audia = AudioMessage::where('audio_messages.id', '>', '0')->with('church')->with('recorder');
+        if ($query) {
             $audia = $audia->search($query);
         }
         //here insert search parameters and stuff

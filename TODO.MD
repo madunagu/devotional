@@ -7,3 +7,5 @@
 * figure out a way to deal with members and roles concerning each of the entities (churches, events, societies, e.t.c)
 * Adding participants or anchors to an event in the event controller or a more suitable controller
 * find a way to retrieve soft deleted entries into the database
+* add cascades/deletes to the database fields that have relational data
+* add max to all neccessary string validation fields
