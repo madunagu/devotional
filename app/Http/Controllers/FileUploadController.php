@@ -8,6 +8,7 @@ class FileUploadController extends Controller
 {
     public function fileUpload(Request $request)
     {
+        //TODO: here insert resize parameters depending on what type of image -->
         $this->validate($request, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:12048',
         ]);
