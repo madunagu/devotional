@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
+use App\Event;
 
-class EventTest extends TestCase
+class EventTest extends CrudTest
 {
     /**
      * The model to use when creating dummy data

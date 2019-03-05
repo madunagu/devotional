@@ -39,22 +39,22 @@ class Event extends Model
 
     protected $fillable = ['name','church_id','starting_at','ending_at','address_id','heirachy_group_id','profile_media_id','user_id'];
 
-    public function addresses()
+    public function address()
     {
-        return $this->hasOne('App\Address');
+        return $this->belongsTo('App\Address');
     }
 
     public function profileMedia()
     {
-        return $this->hasOne('App\ProfileMedia');
+        return $this->belongsTo('App\ProfileMedia');
     }
 
     public function church()
     {
-        return $this->hasOne('App\Church');
+        return $this->belongsTo('App\Church');
     }
 
     public function heirachyGroup(){
-        return $this->hasOne('App\HeirachyGroup');
+        return $this->belongsTo('App\HeirachyGroup');
     }
 }

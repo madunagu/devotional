@@ -31,7 +31,20 @@ class AudioMessage extends Model
         ],
      ];
 
-     protected $fillable = ['name','src_url','full_text','description','author_id','uploader_id','church_id','size','length','profile_media_id', 'language','recorded_at','address_id'];
+    protected $fillable = ['name','src_url','full_text','description','author_id','uploader_id','church_id','size','length','profile_media_id', 'language','address_id'];
 
+    public function profileMedia()
+    {
+        return $this->belongsTo('App\ProfileMedia');
+    }
 
+    public function church()
+    {
+        return $this->belongsTo('App\Church');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo('App\User', 'author_id');
+    }
 }

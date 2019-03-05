@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Heirachy;
 
-class HeirachyTest extends TestCase
+class HeirachyTest extends CrudTest
 {
     /**
      * The model to use when creating dummy data

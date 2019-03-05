@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use Google\Cloud\Speech\V1\SpeechClient;
@@ -12,6 +13,7 @@ use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 
 use App\AudioMessage;
 use App\Http\Resources\AudioCollection;
+use App\Http\Resources\AudioMessageCollection;
 
 class AudioMessageController extends Controller
 {
@@ -27,10 +29,9 @@ class AudioMessageController extends Controller
             'author_id' => 'nullable|integer|exists:users,id',
             'church_id' => 'nullable|integer|exists:churches,id',
             'profile_media_id' => 'nullable|integer|exists:profile_media,id',
-            'size' => 'nullable|integer|max:255',
+            'size' => 'nullable|integer',
             'length' => 'nullable|integer',
             'language' => 'nullable|string',
-            'recorded_at' =>  'nullable|string|max:255',
             'address_id' => 'nullable|integer|exists:addresses,id',
         ]);
 
@@ -103,10 +104,9 @@ class AudioMessageController extends Controller
             'author_id' => 'nullable|integer|exists:users,id',
             'church_id' => 'nullable|integer|exists:churches,id',
             'profile_media_id' => 'nullable|integer|exists:profile_media,id',
-            'size' => 'nullable|integer|max:255',
+            'size' => 'nullable|integer',
             'length' => 'nullable|integer',
             'language' => 'nullable|string',
-            'recorded_at' =>  'nullable|string|max:255',
             'address_id' => 'nullable|integer|exists:addresses,id',
         ]);
 
@@ -155,14 +155,14 @@ class AudioMessageController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioMessage::where('audio_messages.id', '>', '0')->with('churches')->with('recorder');
+        $audia = AudioMessage::where('audio_messages.id', '>', '0')->with('church')->with('author');
         if ($query) {
             $audia = $audia->search($query);
         }
         //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
         $audia = $audia->paginate($length);
-        $data = new AudioCollection($audia);
+        $data = new AudioMessageCollection($audia);
         return response()->json($data);
     }
 

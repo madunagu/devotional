@@ -9,5 +9,5 @@ class Address extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['address1','address2','country','state','city','postal_code','name','longitude','latitude'];
+    protected $fillable = ['address1','address2','country','state','city','postal_code','name','longitude','latitude','user_id'];
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use App\ProfileMedia;
@@ -86,7 +87,7 @@ class ProfileMediaController extends Controller
         //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
         $data = $profile_media->paginate($length);
-        return response()->jsonb($data);
+        return response()->json($data);
     }
 
 

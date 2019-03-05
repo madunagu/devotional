@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\HeirachyGroup;
 
-class HeirachyGroupTest extends TestCase
+class HeirachyGroupTest extends CrudTest
 {
     /**
      * The model to use when creating dummy data
@@ -21,7 +21,7 @@ class HeirachyGroupTest extends TestCase
      *
      * @var string
      */
-    protected $endpoint = 'heirachy_groups';
+    protected $endpoint = 'heirachy-groups';
     /**
      * Any additional "states" to add to factory
      *

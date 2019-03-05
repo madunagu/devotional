@@ -5,10 +5,10 @@ use App\Event;
 
 $factory->define(Event::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->sentence(5),
         'church_id' => 1,
-        'starting_at' => $faker->dateTime,
-        'ending_at' => $faker->dateTime,
+        'starting_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
+        'ending_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'address_id' => 1,
         'heirachy_group_id'=>1,
         'profile_media_id'=>1,

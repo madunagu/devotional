@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use App\Address;
@@ -17,11 +18,11 @@ class AddressController extends Controller
             'country' => 'string|required|max:255',
             'state' => 'string|required|max:255',
             'city' => 'string|required|max:255',
-            'postal_code' => 'nullable|integer|max:20',
+            'postal_code' => 'nullable|string|max:20',
             'default_address' => 'nullable|boolean',
             'name' =>  'nullable|string|max:255',
-            'longitude' => 'nullable|float|max:255',
-            'latitude' => 'nullable|float|max:255'
+            'longitude' => 'nullable|numeric|max:255',
+            'latitude' => 'nullable|numeric|max:255'
         ]);
 
         if ($validator->fails()) {

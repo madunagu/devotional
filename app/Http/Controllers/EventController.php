@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use App\Event;
@@ -15,8 +16,8 @@ class EventController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'string|required|max:255',
             'church_id' => 'nullable|integer|exists:churches,id',
-            'starting_at' => 'nullable|string|max:255',
-            'ending_at' => 'nullable|string|max:255',
+            'starting_at' => 'nullable|date',
+            'ending_at' => 'nullable|date',
             'address_id' => 'nullable|integer|exists:addresses,id',
             'profile_media_id' => 'nullable|integer|exists:profile_media,id',
             'heirachy_group_id' => 'nullable|integer|exists:heirachy_groups,id',
@@ -43,8 +44,8 @@ class EventController extends Controller
             'id' => 'integer|required|exists:events,id',
             'name' => 'string|required|max:255',
             'church_id' => 'nullable|integer|exists:churches,id',
-            'starting_at' => 'nullable|string|max:255',
-            'ending_at' => 'nullable|string|max:255',
+            'starting_at' => 'nullable|date',
+            'ending_at' => 'nullable|date',
             'address_id' => 'nullable|integer|exists:addresses,id',
             'profile_media_id' => 'nullable|integer|exists:profile_media,id',
             'heirachy_group_id' => 'nullable|integer|exists:heirachy_groups,id',
@@ -93,7 +94,7 @@ class EventController extends Controller
         }
 
         $query = $request['q'];
-        $events = Event::where('events.id', '>', '0')->with('church')->with('participants');
+        $events = Event::where('events.id', '>', '0')->with('church'); //TODO: add participants to the search using heirachies
         if ($query) {
             $events = $events->search($query);
         }

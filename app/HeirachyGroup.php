@@ -9,5 +9,10 @@ class HeirachyGroup extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['id','name','description','user_id'];
+    protected $fillable = ['name','description','user_id'];
+
+    public function heirachies()
+    {
+        return $this->hasMany('App\heirachy');
+    }
 }

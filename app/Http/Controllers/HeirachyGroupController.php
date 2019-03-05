@@ -80,7 +80,7 @@ class HeirachyGroupController extends Controller
         }
 
         $query = $request['q'];
-        $heirachy_groups = Heirachy::where('heirachy_groups.id', '>', '0')->with('heirachies');
+        $heirachy_groups = HeirachyGroup::where('heirachy_groups.id', '>', '0')->with('heirachies');
         if ($query) {
             $heirachy_groups = $heirachy_groups->search($query);
         }

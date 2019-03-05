@@ -21,7 +21,7 @@ class AudioMessageTest extends CrudTest
      *
      * @var string
      */
-    protected $endpoint = 'audio_messages';
+    protected $endpoint = 'audio-messages';
     /**
      * Any additional "states" to add to factory
      *

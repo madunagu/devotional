@@ -26,8 +26,7 @@ class CreateAudioMessagesTable extends Migration
             $table->integer('length')->nullable();
             $table->integer('profile_media_id')->nullable();
             $table->string('language')->default('english');
-            $table->dateTime('recorded_at')->nullable();
-            $table->integer('address_id')->nullable();
+            $table->integer('address_id')->nullable();//where it was recorded at
             $table->softDeletes();
             $table->timestamps();
         });

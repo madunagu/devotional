@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\ProfileMedia;
 
-class ProfileMediaTest extends TestCase
+class ProfileMediaTest extends CrudTest
 {
     /**
      * The model to use when creating dummy data
@@ -21,7 +21,7 @@ class ProfileMediaTest extends TestCase
      *
      * @var string
      */
-    protected $endpoint = 'profile_media';
+    protected $endpoint = 'profile-media';
     /**
      * Any additional "states" to add to factory
      *

@@ -34,11 +34,16 @@ class Society extends Model
 
      public function profileMedia()
      {
-         return $this->hasOne('App\ProfileMedia');
+         return $this->belongsTo('App\ProfileMedia');
+     }
+
+     public function church()
+     {
+         return $this->belongsTo('App\Church');
      }
 
      public function heirachyGroup()
      {
-         return $this->hasOne('App\HeirachyGroup');
+         return $this->belongsTo('App\HeirachyGroup');
      }
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+
 use App\Society;
 use App\Http\Resources\SocietyCollection;
 
@@ -91,7 +94,7 @@ class SocietyController extends Controller
         }
 
         $query = $request['q'];
-        $societies = Society::where('societies.id','>','0')->with('church')->with('profile_media');
+        $societies = Society::where('societies.id','>','0')->with('church')->with('profileMedia');
         if($query){
             $societies = $societies->search($query);
         }

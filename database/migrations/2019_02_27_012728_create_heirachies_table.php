@@ -22,6 +22,7 @@ class CreateHeirachiesTable extends Migration
             $table->string('person_name')->nullable();
             $table->integer('user_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

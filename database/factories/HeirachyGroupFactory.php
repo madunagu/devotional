@@ -1,8 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\HeirachyGroup;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(HeirachyGroup::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->sentence,

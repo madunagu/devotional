@@ -14,7 +14,8 @@ class HeirachyGroupSeeder extends Seeder
     {
         HeirachyGroup::create(['id'=>1,
           'name'=>'default group',
-          'description'=>'default heirachy group for small churches'
+          'description'=>'default heirachy group for small churches',
+          'user_id' => '1',
         ]);
     }
 }

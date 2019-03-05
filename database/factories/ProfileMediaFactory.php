@@ -1,8 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\ProfileMedia;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(ProfileMedia::class, function (Faker $faker) {
     return [
         'logo_url'=> $faker->imageUrl(50, 50),
         'profile_image_url'=> $faker->imageUrl('500,500'),

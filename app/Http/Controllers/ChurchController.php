@@ -112,7 +112,7 @@ class ChurchController extends Controller
         $hq = $request['hq'];
         // parent_id  is set when searching through the children of a particular mother church
         $parent_id = (int)$request['parent_id'];
-        $churches = Church::where('churches.id','>','0')->with('addresses')->with('profile_media');
+        $churches = Church::where('churches.id','>','0')->with('address')->with('profileMedia');
         if($query){
             $churches = $churches->search($query);
         }

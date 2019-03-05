@@ -38,18 +38,23 @@ class Church extends Model
 
     protected $fillable = ['name','alternate_name','parent_id','leader_id','user_id','address_id','profile_media_id','slogan','description','heirachy_group_id'];
 
-    public function addresses()
+    public function address()
     {
-        return $this->hasMany('App\Address');
+        return $this->belongsTo('App\Address');
     }
 
     public function profileMedia()
     {
-        return $this->hasOne('App\ProfileMedia');
+        return $this->belongsTo('App\ProfileMedia');
     }
-    
+
     public function heirachyGroup()
     {
-        return $this->hasOne('App\HeirachyGroup');
+        return $this->belongsTo('App\HeirachyGroup');
+    }
+
+    public function leader()
+    {
+        return $this->belongsTo('App\User','leader_id');
     }
 }

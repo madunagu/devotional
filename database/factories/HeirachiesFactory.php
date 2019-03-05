@@ -1,8 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\Heirachy;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(Heirachy::class, function (Faker $faker) {
     return [
         'heirachy_group_id'=>1,
         'rank' => $faker->numberBetween(0,7),
