@@ -54,6 +54,7 @@ class ChurchController extends Controller
             'required' => 'The :attribute field is required.',
             'exists' => 'The specified :attribute field reference id does not exist',
             'integer' => 'The :attribute is of invalid type'
+            
         ];
         $validator = Validator::make($request->all(), [
             'id' => 'integer|required|exists:churches,id',
@@ -99,9 +100,9 @@ class ChurchController extends Controller
     }
 
     public function list(Request $request)
-    {
+    {   
         $validator = Validator::make($request->all(), [
-            'q' => 'nullable|string|min:3'
+            ".env('q')"
         ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);

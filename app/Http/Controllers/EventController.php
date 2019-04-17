@@ -87,7 +87,7 @@ class EventController extends Controller
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                'q' => 'nullable|string|min:3'
+                ".env('q')"
             ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);

@@ -83,7 +83,7 @@ class HeirachyController extends Controller
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-        'q' => 'nullable|string|min:3',
+        ".env('q')",
         'heirachy_group_id' => 'nullable|integer|exists:heirachy_groups,id'
     ]);
         if ($validator->fails()) {
