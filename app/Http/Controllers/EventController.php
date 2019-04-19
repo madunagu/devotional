@@ -8,6 +8,7 @@ use Validator;
 
 use App\Event;
 use App\Http\Resources\EventCollection;
+use DB;
 
 class EventController extends Controller
 {
@@ -87,7 +88,7 @@ class EventController extends Controller
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                'q' => 'nullable|string|min:3'
+                ".env('q')"
             ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
@@ -119,5 +120,13 @@ class EventController extends Controller
             'data' => false
         ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = Event::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }

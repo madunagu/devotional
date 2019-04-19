@@ -8,6 +8,7 @@ use Validator;
 
 use App\Society;
 use App\Http\Resources\SocietyCollection;
+use DB;
 
 class SocietyController extends Controller
 {
@@ -87,7 +88,7 @@ class SocietyController extends Controller
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'q' => 'nullable|string|min:3'
+            ".env('q')"
         ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
@@ -118,5 +119,13 @@ class SocietyController extends Controller
                 'data' => false
             ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = Society::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use DB;
 
 use App\ProfileMedia;
 
@@ -104,5 +105,13 @@ class ProfileMediaController extends Controller
                 'data' => false
             ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = ProfileMedia::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }

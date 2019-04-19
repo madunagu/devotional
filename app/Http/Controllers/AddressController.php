@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use App\Address;
+use DB;
 
 class AddressController extends Controller
 {
@@ -122,5 +123,13 @@ class AddressController extends Controller
                 'data' => false
             ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = Address::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }

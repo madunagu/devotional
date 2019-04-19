@@ -7,9 +7,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\Church;
+use Kirkbater\Testing\SoftDeletes;
 
 class ChurchTest extends CrudTest
 {
+    use SoftDeletes;
 
      /**
      * The model to use when creating dummy data

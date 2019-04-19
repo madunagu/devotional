@@ -9,6 +9,7 @@ use App\HeirachyGroup;
 
 class HeirachyGroupController extends Controller
 {
+    private $mini;
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -73,7 +74,7 @@ class HeirachyGroupController extends Controller
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-        'q' => 'nullable|string|min:3',
+        ".env('q')"
     ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
@@ -105,5 +106,13 @@ class HeirachyGroupController extends Controller
             'data' => false
         ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = HeirachyGroup::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }

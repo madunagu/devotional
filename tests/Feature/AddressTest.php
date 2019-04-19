@@ -5,11 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Kirkbater\Testing\SoftDeletes;
 
 use App\Address;
 
 class AddressTest extends CrudTest
 {
+    use SoftDeletes;
     /**
      * The model to use when creating dummy data
      *
