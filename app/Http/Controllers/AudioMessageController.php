@@ -181,4 +181,12 @@ class AudioMessageController extends Controller
             ], 404);
         }
     }
+
+    public function restore($id)
+    {
+        $id = AudioMessage::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
+    }
 }

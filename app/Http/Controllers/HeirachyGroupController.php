@@ -107,4 +107,12 @@ class HeirachyGroupController extends Controller
         ], 404);
         }
     }
+
+    public function restore($id)
+    {
+        $id = HeirachyGroup::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
+    }
 }

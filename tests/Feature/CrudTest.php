@@ -101,4 +101,13 @@ abstract class CrudTest extends TestCase
         $response
             ->assertStatus(200);
     }
+
+    // public function testRestore()
+    // {
+    //     $activity = $this->testDestroy();
+    //     $activity = $activity::withTrashed()->where($this->testDestroy, 1)->restore();
+    //     $response = $this->json('POST', "api/{$this->endpoint}/{$activity->id}");
+    //     $response
+    //         ->asserStatus(200);
+    // }
 }

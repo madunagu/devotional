@@ -8,6 +8,7 @@ use Validator;
 
 use App\Church;
 use App\Http\Resources\ChurchCollection;
+use DB;
 
 class ChurchController extends Controller
 {
@@ -145,5 +146,13 @@ class ChurchController extends Controller
                 'data' => false
             ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = Church::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }

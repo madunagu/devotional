@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16f5f544ebfedb81ddac713d0e1ef5f8",
+    "content-hash": "3e403be093d3df982523f78a7e6ebc7f",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -1180,6 +1180,36 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "kirkbater/soft-deletes",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamkirkbater/soft-deletes.git",
+                "reference": "ea7e4006adf4d925c4ce5bc43dca7568d52a2096"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamkirkbater/soft-deletes/zipball/ea7e4006adf4d925c4ce5bc43dca7568d52a2096",
+                "reference": "ea7e4006adf4d925c4ce5bc43dca7568d52a2096",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Kirkbater\\Testing": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Kirk Bater",
+                    "email": "kirk.bater@gmail.com"
+                }
+            ],
+            "description": "Trait to check for soft deletes in Laravel 5",
+            "time": "2016-01-18T19:41:00+00:00"
         },
         {
             "name": "laravel/framework",

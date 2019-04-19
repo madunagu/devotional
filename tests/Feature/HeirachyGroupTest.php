@@ -6,9 +6,11 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\HeirachyGroup;
+use Kirkbater\Testing\SoftDeletes;
 
 class HeirachyGroupTest extends CrudTest
 {
+    use SoftDeletes;
     /**
      * The model to use when creating dummy data
      *

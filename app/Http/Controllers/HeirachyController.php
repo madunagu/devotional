@@ -8,6 +8,7 @@ use Validator;
 use App\Event;
 use App\Http\Resources\EventCollection;
 use App\Heirachy;
+use DB;
 
 class HeirachyController extends Controller
 {
@@ -122,5 +123,13 @@ class HeirachyController extends Controller
             'data' => false
         ], 404);
         }
+    }
+
+    public function restore($id)
+    {
+        $id = Heirachy::onlyTrashed()->findorFail($id)->restore();
+        return response()->json([
+            'data' => true
+        ], 200);
     }
 }
