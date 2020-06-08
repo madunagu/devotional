@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use App\Church;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/login', 'Auth\LoginController@login');
+
+Route::post('/register', 'Auth\RegisterController@register');
+
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/churches', 'ChurchController@list');
@@ -68,3 +73,10 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/societies/{id}', 'SocietyController@update');
     Route::delete('/societies/{id}', 'SocietyController@delete');
 });
+
+
+
+Route::get('/users', function (Request $request) {
+    return Church::find(1);
+}
+);

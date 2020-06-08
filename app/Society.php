@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Nicolaslopezj\Searchable\SearchableTrait;
 
-
 class Society extends Model
 {
     use SearchableTrait, SoftDeletes;
@@ -30,20 +29,20 @@ class Society extends Model
         ],
      ];
 
-     protected $fillable = ['name','church_id','parent_id','closed','profile_media_id','user_id','heirachy_group_id','description'];
+    protected $fillable = ['name','church_id','parent_id','closed','profile_media_id','user_id','heirachy_group_id','description'];
 
-     public function profileMedia()
-     {
-         return $this->belongsTo('App\ProfileMedia');
-     }
+    public function profileMedia()
+    {
+        return $this->belongsTo('App\ProfileMedia');
+    }
 
-     public function church()
-     {
-         return $this->belongsTo('App\Church');
-     }
+    public function church()
+    {
+        return $this->belongsTo('App\Church');
+    }
 
-     public function heirachyGroup()
-     {
-         return $this->belongsTo('App\HeirachyGroup');
-     }
+    public function heirachyGroup()
+    {
+        return $this->belongsTo('App\HeirachyGroup');
+    }
 }
