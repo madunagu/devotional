@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Church;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,8 +74,3 @@ Route::middleware('auth:api')->group(function () {
 });
 
 
-
-Route::get('/users', function (Request $request) {
-    return Church::find(1);
-}
-);

@@ -40,7 +40,7 @@ class AddressController extends Controller
         }
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data'=>$result], 201);
         } else {
             return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
         }
@@ -83,13 +83,18 @@ class AddressController extends Controller
         }
     }
 
-    public function find_address_geolocation(Address $address){
-
+    public function find_address_geolocation(Address $address)
+    {
     }
 
     public function get(Request $request)
     {
         $id = (int)$request->route('id');
+        // $address = Address::find($id);
+        // return response()->json([
+        //         'data' => $address
+        //     ], 200);
+       
         if ($address = Address::find($id)) {
             return response()->json([
                 'data' => $address
@@ -103,7 +108,7 @@ class AddressController extends Controller
 
     public function list(Request $request)
     {
-       //here insert search parameters and stuff
+        //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
         $data = Address::paginate($length);
         return response()->json(compact('data'));

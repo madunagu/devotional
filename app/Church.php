@@ -31,8 +31,9 @@ class Church extends Model
             'churches.description' => 1,
         ],
         'joins' => [
-            'addresses' => ['address_id','addresses.id'],
-            'profile_media' => ['profile_media_id','profile_media.id'],
+            'addresses' => ['churches.address_id','addresses.id'],
+            'profile_media' => ['churches.profile_media_id','profile_media.id'],
+            'users' => ['churches.user_id','users.id'],
         ],
      ];
 
@@ -55,6 +56,6 @@ class Church extends Model
 
     public function leader()
     {
-        return $this->belongsTo('App\User','leader_id');
+        return $this->belongsTo('App\User', 'leader_id');
     }
 }
