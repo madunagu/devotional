@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+      $this->call(AddressSeeder::class);
+      $this->call(ChurchSeeder::class);
+      $this->call(EventSeeder::class);
       $this->call(HeirachySeeder::class);
       $this->call(HeirachyGroupSeeder::class);
     }
