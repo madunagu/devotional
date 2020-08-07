@@ -45,6 +45,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/events/{id}', 'EventController@get');
     Route::put('/events/{id}', 'EventController@update');
     Route::delete('/events/{id}', 'EventController@delete');
+    Route::post('/events/{id}', 'EventController@attend');
 
 
     Route::get('/heirachies', 'HeirachyController@list');

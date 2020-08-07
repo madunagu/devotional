@@ -8,6 +8,7 @@ use Validator;
 
 use App\Event;
 use App\Http\Resources\EventCollection;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -33,9 +34,9 @@ class EventController extends Controller
         //create event emmiter or reminder or notifications for those who may be interested
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
     public function update(Request $request)
@@ -54,7 +55,6 @@ class EventController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
-
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
         $id = $request->route('id');
@@ -64,60 +64,88 @@ class EventController extends Controller
 
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 
     public function get(Request $request)
     {
-        $id = (int)$request->route('id');
+        $id = (int) $request->route('id');
         if ($event = Event::find($id)) {
             return response()->json([
-            'data' => $event
-        ], 200);
+                'data' => $event
+            ], 200);
         } else {
             return response()->json([
-            'data' => false
-        ], 404);
+                'data' => false
+            ], 404);
         }
     }
 
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                'q' => 'nullable|string|min:3'
-            ]);
+            'q' => 'nullable|string|min:3'
+        ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
 
         $query = $request['q'];
-        $events = Event::where('events.id', '>', '0')->with('church'); //TODO: add participants to the search using heirachies
+        $events = Event::with('user')->with('church')->with('address')->with('profileMedia'); //TODO: add participants to the search using heirachies
         if ($query) {
             $events = $events->search($query);
         }
         //here insert search parameters and stuff
-        $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
+        $length = (int) (empty($request['perPage']) ? 15 : $request['perPage']);
         $events = $events->paginate($length);
         $data = new EventCollection($events);
         return response()->json($data);
     }
 
+    // this is a bool function
+    public function attend(Request $request)
+    {
+        $eventId = $request->route('id');
+        $isAttending = $request['isAttending'];
+        $userId = Auth::id();
+        $attended = DB::table('event_user')->where('event_id', $eventId)->where('user_id', $userId)->get();
+    
+        if ($isAttending and empty($attended)) {
+            $insert = DB::table('event_user')->insert(['event_id' => $eventId, 'user_id' => $userId]);
+        } elseif ($attended and !$isAttending) {
+            $attended->delete();
+        }
+        
+        return response()->json(['data' => true]);
+    }
+
+    public function absent(Request $request)
+    {
+        $eventId = $request->route('id');
+        $userId = Auth::id();
+        $insert = DB::table('event_user')->where('event_id', $eventId)->where('user_id', $userId)->delete();
+        if ($insert) {
+            return response()->json(['data' => true]);
+        }
+    }
+
+
 
     public function delete(Request $request)
     {
-        $id = (int)$request->route('id');
+        $id = (int) $request->route('id');
         if ($event = Event::find($id)) {
             $event->delete();
             return response()->json([
-            'data' => true
-        ], 200);
+                'data' => true
+            ], 200);
         } else {
             return response()->json([
-            'data' => false
-        ], 404);
+                'data' => false
+            ], 404);
         }
     }
 }

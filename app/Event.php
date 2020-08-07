@@ -54,6 +54,10 @@ class Event extends Model
         return $this->belongsTo('App\Church');
     }
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
     public function heirachyGroup(){
         return $this->belongsTo('App\HeirachyGroup');
     }
