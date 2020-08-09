@@ -37,7 +37,7 @@ class Church extends Model
         ],
      ];
 
-    protected $fillable = ['name','alternate_name','parent_id','leader_id','user_id','address_id','profile_media_id','slogan','description','heirachy_group_id'];
+    protected $fillable = ['name','alternate_name','parent_id','leader_id','user_id','address_id','profile_media_id','slogan','description','hierarchy_group_id'];
 
     public function address()
     {
@@ -49,9 +49,9 @@ class Church extends Model
         return $this->belongsTo('App\ProfileMedia');
     }
 
-    public function heirachyGroup()
+    public function hierarchyGroup()
     {
-        return $this->belongsTo('App\HeirachyGroup');
+        return $this->belongsTo('App\HierarchyGroup');
     }
 
     public function leader()

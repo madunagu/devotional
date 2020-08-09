@@ -29,7 +29,7 @@ class Society extends Model
         ],
      ];
 
-    protected $fillable = ['name','church_id','parent_id','closed','profile_media_id','user_id','heirachy_group_id','description'];
+    protected $fillable = ['name','church_id','parent_id','closed','profile_media_id','user_id','hierarchy_group_id','description'];
 
     public function profileMedia()
     {
@@ -41,8 +41,8 @@ class Society extends Model
         return $this->belongsTo('App\Church');
     }
 
-    public function heirachyGroup()
+    public function HierarchyGroup()
     {
-        return $this->belongsTo('App\HeirachyGroup');
+        return $this->belongsTo('App\HierarchyGroup');
     }
 }

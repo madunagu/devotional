@@ -34,11 +34,11 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/addresses/{id}', 'AddressController@update');
     Route::delete('/addresses/{id}', 'AddressController@delete');
 
-    Route::get('/audio-messages', 'AudioPostController@list');
-    Route::post('/audio-messages', 'AudioPostController@create');
-    Route::get('/audio-messages/{id}', 'AudioPostController@get');
-    Route::put('/audio-messages/{id}', 'AudioPostController@update');
-    Route::delete('/audio-messages/{id}', 'AudioPostController@delete');
+    Route::get('/audio-posts', 'AudioPostController@list');
+    Route::post('/audio-posts', 'AudioPostController@create');
+    Route::get('/audio-posts/{id}', 'AudioPostController@get');
+    Route::put('/audio-posts/{id}', 'AudioPostController@update');
+    Route::delete('/audio-posts/{id}', 'AudioPostController@delete');
 
     Route::get('/events', 'EventController@list');
     Route::post('/events', 'EventController@create');
@@ -48,18 +48,18 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/events/{id}', 'EventController@attend');
 
 
-    Route::get('/heirachies', 'HeirachyController@list');
-    Route::post('/heirachies', 'HeirachyController@create');
-    Route::get('/heirachies/{id}', 'HeirachyController@get');
-    Route::put('/heirachies/{id}', 'HeirachyController@update');
-    Route::delete('/heirachies/{id}', 'HeirachyController@delete');
+    Route::get('/hierarchies', 'HierarchyController@list');
+    Route::post('/hierarchies', 'HierarchyController@create');
+    Route::get('/hierarchies/{id}', 'HierarchyController@get');
+    Route::put('/hierarchies/{id}', 'HierarchyController@update');
+    Route::delete('/hierarchies/{id}', 'HierarchyController@delete');
 
 
-    Route::get('/heirachy-groups', 'HeirachyGroupController@list');
-    Route::post('/heirachy-groups', 'HeirachyGroupController@create');
-    Route::get('/heirachy-groups/{id}', 'HeirachyGroupController@get');
-    Route::put('/heirachy-groups/{id}', 'HeirachyGroupController@update');
-    Route::delete('/heirachy-groups/{id}', 'HeirachyGroupController@delete');
+    Route::get('/hierarchy-groups', 'HierarchyGroupController@list');
+    Route::post('/hierarchy-groups', 'HierarchyGroupController@create');
+    Route::get('/hierarchy-groups/{id}', 'HierarchyGroupController@get');
+    Route::put('/hierarchy-groups/{id}', 'HierarchyGroupController@update');
+    Route::delete('/hierarchy-groups/{id}', 'HierarchyGroupController@delete');
 
     Route::get('/profile-media', 'ProfileMediaController@list');
     Route::post('/profile-media', 'ProfileMediaController@create');

@@ -5,23 +5,23 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\HeirachyGroup;
+use App\AudioPost;
 
-class HeirachyGroupTest extends CrudTest
+class AudioPostTest extends CrudTest
 {
-    /**
+   /**
      * The model to use when creating dummy data
      *
      * @var class
      */
-    protected $model = HeirachyGroup::class;
+    protected $model = AudioPost::class;
     /**
      * The endpoint to query in the API
      * e.g = /api/v1/<endpoint>
      *
      * @var string
      */
-    protected $endpoint = 'heirachy-groups';
+    protected $endpoint = 'audio-posts';
     /**
      * Any additional "states" to add to factory
      *

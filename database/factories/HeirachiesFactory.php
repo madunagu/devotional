@@ -1,11 +1,11 @@
 <?php
 
 use Faker\Generator as Faker;
-use App\Heirachy;
+use App\Hierarchy;
 
-$factory->define(Heirachy::class, function (Faker $faker) {
+$factory->define(Hierarchy::class, function (Faker $faker) {
     return [
-        'heirachy_group_id'=>1,
+        'hierarchy_group_id'=>1,
         'rank' => $faker->numberBetween(0,7),
         'position_name' => $faker->name,
         'position_slang' => $faker->name,

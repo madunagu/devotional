@@ -20,9 +20,9 @@ class AudioPost extends Model
          * @var array
          */
         'columns' => [
-            'audio_messages.name' => 10,
-            'audio_messages.description' => 5,
-            'audio_messages.full_text' => 2,
+            'audio_posts.name' => 10,
+            'audio_posts.description' => 5,
+            'audio_posts.full_text' => 2,
         ],
         'joins' => [
             'addresses' => ['address_id','addresses.id'],

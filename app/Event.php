@@ -37,7 +37,7 @@ class Event extends Model
         ],
      ];
 
-    protected $fillable = ['name','church_id','starting_at','ending_at','address_id','heirachy_group_id','profile_media_id','user_id'];
+    protected $fillable = ['name','church_id','starting_at','ending_at','address_id','hierarchy_group_id','profile_media_id','user_id'];
 
     public function address()
     {
@@ -58,7 +58,7 @@ class Event extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function heirachyGroup(){
-        return $this->belongsTo('App\HeirachyGroup');
+    public function hierarchyGroup(){
+        return $this->belongsTo('App\HierarchyGroup');
     }
 }

@@ -5,23 +5,23 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Heirachy;
+use App\Hierarchy;
 
-class HeirachyTest extends CrudTest
+class HierarchyTest extends CrudTest
 {
     /**
      * The model to use when creating dummy data
      *
      * @var class
      */
-    protected $model = Heirachy::class;
+    protected $model = Hierarchy::class;
     /**
      * The endpoint to query in the API
      * e.g = /api/v1/<endpoint>
      *
      * @var string
      */
-    protected $endpoint = 'heirachies';
+    protected $endpoint = 'hierarchies';
     /**
      * Any additional "states" to add to factory
      *

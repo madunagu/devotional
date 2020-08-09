@@ -19,7 +19,7 @@ class SocietyController extends Controller
             'parent_id' => 'nullable|integer',
             'closed' => 'nullable|boolean',
             'profile_media_id' => 'integer|exists:profile_media,id',
-            'heirachy_group_id'=> 'nullable|integer|exists:heirachy_groups,id',
+            'hierarchy_group_id'=> 'nullable|integer|exists:hierarchy_groups,id',
         ]);
 
         if ($validator->fails()) {
@@ -49,7 +49,7 @@ class SocietyController extends Controller
             'parent_id' => 'nullable|integer',
             'closed' => 'nullable|boolean',
             'profile_media_id' => 'integer|exists:profile_media,id',
-            'heirachy_group_id'=> 'nullable|integer|exists:heirachy_groups,id',
+            'hierarchy_group_id'=> 'nullable|integer|exists:hierarchy_groups,id',
         ]);
 
         if ($validator->fails()) {

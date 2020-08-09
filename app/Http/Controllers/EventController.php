@@ -21,7 +21,7 @@ class EventController extends Controller
             'ending_at' => 'nullable|date',
             'address_id' => 'nullable|integer|exists:addresses,id',
             'profile_media_id' => 'nullable|integer|exists:profile_media,id',
-            'heirachy_group_id' => 'nullable|integer|exists:heirachy_groups,id',
+            'hierarchy_group_id' => 'nullable|integer|exists:hierarchy_groups,id',
         ]);
 
         if ($validator->fails()) {
@@ -49,7 +49,7 @@ class EventController extends Controller
             'ending_at' => 'nullable|date',
             'address_id' => 'nullable|integer|exists:addresses,id',
             'profile_media_id' => 'nullable|integer|exists:profile_media,id',
-            'heirachy_group_id' => 'nullable|integer|exists:heirachy_groups,id',
+            'hierarchy_group_id' => 'nullable|integer|exists:hierarchy_groups,id',
         ]);
 
         if ($validator->fails()) {
@@ -94,7 +94,7 @@ class EventController extends Controller
         }
 
         $query = $request['q'];
-        $events = Event::with('user')->with('church')->with('address')->with('profileMedia'); //TODO: add participants to the search using heirachies
+        $events = Event::with('user')->with('church')->with('address')->with('profileMedia'); //TODO: add participants to the search using heirarchies
         if ($query) {
             $events = $events->search($query);
         }

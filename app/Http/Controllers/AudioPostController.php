@@ -95,7 +95,7 @@ class AudioPostController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'integer|required|exists:audio_messages,id',
+            'id' => 'integer|required|exists:audio_posts,id',
             'name' => 'string|required|max:255',
             'src_url' => 'string|required|max:255',
             'full_text' => 'nullable|string',
@@ -115,7 +115,7 @@ class AudioPostController extends Controller
 
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
-        $result = $this->getTrackDetails($result);
+        $result = $this->getTrackDetails($data);
         $result= $this->getTrackFullText($result);
         $id = $request->route('id');
         $result = AudioPost::find($id);
@@ -154,7 +154,7 @@ class AudioPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioPost::where('audio_messages.id', '>', '0')->with('church')->with('author');
+        $audia = AudioPost::where('audio_posts.id', '>', '0')->with('church')->with('author');
         if ($query) {
             $audia = $audia->search($query);
         }

@@ -53,21 +53,21 @@ class ProfileMedia extends Model
         'background_image_url' => [
             'width' => 500,
             'height' => 500,
-    'crop' => true,
-        'disk' => 'public',
-       // a folder path on the above disk, default config('imageup.upload_directory')
+            'crop' => true,
+            'disk' => 'public',
+            // a folder path on the above disk, default config('imageup.upload_directory')
             'path' => 'background_images',
-           'placeholder' => '/images/avatar-placeholder.svg',
+            'placeholder' => '/images/avatar-placeholder.svg',
 
         ],
         'profile_image_url' => [
             'width' => 500,
             'height' => 500,
-    'crop' => true,
-        'disk' => 'public',
-       // a folder path on the above disk, default config('imageup.upload_directory')
+            'crop' => true,
+            'disk' => 'public',
+            // a folder path on the above disk, default config('imageup.upload_directory')
             'path' => 'background_images',
-           'placeholder' => '/images/avatar-placeholder.svg',
+            'placeholder' => '/images/avatar-placeholder.svg',
 
         ],
 

@@ -39,6 +39,6 @@ class CreateAudioPostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('audio_messages');
+        Schema::dropIfExists('audio_posts');
     }
 }

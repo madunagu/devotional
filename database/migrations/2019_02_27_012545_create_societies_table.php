@@ -21,7 +21,7 @@ class CreateSocietiesTable extends Migration
             $table->boolean('closed')->default(true);
             $table->integer('profile_media_id')->nullable();
             $table->integer('user_id');
-            $table->integer('heirachy_group_id')->nullable();
+            $table->integer('hierarchy_group_id')->nullable();
             $table->string('description')->nullable();
             $table->softDeletes();
             $table->timestamps();

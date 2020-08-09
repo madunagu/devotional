@@ -10,7 +10,7 @@ $factory->define(Event::class, function (Faker $faker) {
         'starting_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'ending_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'address_id' => 1,
-        'heirachy_group_id'=>1,
+        'hierarchy_group_id'=>1,
         'profile_media_id'=>1,
         'user_id'=>1,
     ];
