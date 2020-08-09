@@ -34,7 +34,7 @@ class FeedController extends Controller
                 $join->on('followers.user_id', '=', 'posts.user_id')
                      ->where('feeds.type', 'post');
             })
-            ->sortBy('')
+            ->sortBy('feeds.id','DESC')
             ->get();
         $result = new FeedCollection($feeds);
 
