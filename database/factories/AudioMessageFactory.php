@@ -2,10 +2,10 @@
 
 use Faker\Generator as Faker;
 
-use App\AudioMessage;
+use App\AudioPost;
 use Illuminate\Support\Facades\Storage;
 
-$factory->define(AudioMessage::class, function (Faker $faker) {
+$factory->define(AudioPost::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'src_url' => Storage::url('audio/Hillsong-Touch-Of-Heaven.mp3'),

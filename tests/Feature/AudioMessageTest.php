@@ -5,16 +5,16 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\AudioMessage;
+use App\AudioPost;
 
-class AudioMessageTest extends CrudTest
+class AudioPostTest extends CrudTest
 {
    /**
      * The model to use when creating dummy data
      *
      * @var class
      */
-    protected $model = AudioMessage::class;
+    protected $model = AudioPost::class;
     /**
      * The endpoint to query in the API
      * e.g = /api/v1/<endpoint>

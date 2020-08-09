@@ -34,11 +34,11 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/addresses/{id}', 'AddressController@update');
     Route::delete('/addresses/{id}', 'AddressController@delete');
 
-    Route::get('/audio-messages', 'AudioMessageController@list');
-    Route::post('/audio-messages', 'AudioMessageController@create');
-    Route::get('/audio-messages/{id}', 'AudioMessageController@get');
-    Route::put('/audio-messages/{id}', 'AudioMessageController@update');
-    Route::delete('/audio-messages/{id}', 'AudioMessageController@delete');
+    Route::get('/audio-messages', 'AudioPostController@list');
+    Route::post('/audio-messages', 'AudioPostController@create');
+    Route::get('/audio-messages/{id}', 'AudioPostController@get');
+    Route::put('/audio-messages/{id}', 'AudioPostController@update');
+    Route::delete('/audio-messages/{id}', 'AudioPostController@delete');
 
     Route::get('/events', 'EventController@list');
     Route::post('/events', 'EventController@create');
@@ -72,6 +72,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/societies/{id}', 'SocietyController@get');
     Route::put('/societies/{id}', 'SocietyController@update');
     Route::delete('/societies/{id}', 'SocietyController@delete');
+
+    Route::get('/feed', 'FeedController@load');
 });
 
 

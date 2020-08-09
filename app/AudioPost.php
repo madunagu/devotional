@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Nicolaslopezj\Searchable\SearchableTrait;
 
-class AudioMessage extends Model
+class AudioPost extends Model
 {
     use SearchableTrait, SoftDeletes;
 
