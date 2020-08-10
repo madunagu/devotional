@@ -17,24 +17,23 @@ class FeedController extends Controller
         // $feed = Feed::where('poster_id',$id)
         $feeds = User::find($id)
             ->following()
-            ->join('feeds', 'feeds.user_id', '=', 'followers.user_id')
+            ->join('feeds', 'feeds.poster_id', '=', 'user_followers.user_id')
             ->leftJoin('events', function ($join) {
-                $join->on('followers.user_id', '=', 'events.user_id')
+                $join->on('user_followers.user_id', '=', 'events.user_id')
                      ->where('feeds.type', 'event');
             })
             ->leftJoin('audio_posts', function ($join) {
-                $join->on('followers.user_id', '=', 'audio_posts.user_id')
+                $join->on('user_followers.user_id', '=', 'audio_posts.uploader_id')
                      ->where('feeds.type', 'audio');
             })
             ->leftJoin('video_posts', function ($join) {
-                $join->on('followers.user_id', '=', 'video_posts.user_id')
+                $join->on('user_followers.user_id', '=', 'video_posts.uploader_id')
                      ->where('feeds.type', 'video');
             })
             ->leftJoin('posts', function ($join) {
-                $join->on('followers.user_id', '=', 'posts.user_id')
+                $join->on('user_followers.user_id', '=', 'posts.user_id')
                      ->where('feeds.type', 'post');
             })
-            ->sortBy('feeds.id','DESC')
             ->get();
         $result = new FeedCollection($feeds);
 

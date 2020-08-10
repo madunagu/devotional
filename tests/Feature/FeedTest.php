@@ -5,9 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\AttachJwtToken;
 
 class FeedTest extends TestCase
 {
+
+    use AttachJwtToken;
+
     /**
      * A basic feature test example.
      *
@@ -15,8 +19,9 @@ class FeedTest extends TestCase
      */
     public function testExample()
     {
-        $response = $this->get('/');
+        $response = $this->get('/api/feed');
 
         $response->assertStatus(200);
+
     }
 }
