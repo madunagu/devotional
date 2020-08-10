@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\VideoPost;
 
 class VideoPostSeeder extends Seeder
 {
@@ -11,6 +12,7 @@ class VideoPostSeeder extends Seeder
      */
     public function run()
     {
+        VideoPost::truncate();
         factory(App\VideoPost::class, 100)->create();
     }
 }

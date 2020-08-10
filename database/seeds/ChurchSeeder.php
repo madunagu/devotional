@@ -11,6 +11,7 @@ class ChurchSeeder extends Seeder
      */
     public function run()
     {
+        App\Church::truncate();
         factory(App\Church::class, 10)->create();
     }
 }

@@ -11,6 +11,7 @@ class AudioPostSeeder extends Seeder
      */
     public function run()
     {
+        App\AudioPost::truncate();
         factory(App\AudioPost::class, 100)->create();
     }
 }

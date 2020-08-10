@@ -11,6 +11,7 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
+        App\Event::truncate();
         factory(App\Event::class, 100)->create();
     }
 }

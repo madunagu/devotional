@@ -14,10 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::insert([
+        App\User::truncate();
+        $user = User::create([
             'name' => 'Ekene Madunagu',
             'email' => 'ekenemadunagu@gmail.com',
             'password' => Hash::make('mercy'),
         ]);
+
+        factory(App\User::class, 50)->create();
+
     }
 }
