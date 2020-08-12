@@ -7,6 +7,7 @@ use App\Http\Resources\FeedCollection;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FeedController extends Controller
 {
@@ -15,25 +16,25 @@ class FeedController extends Controller
         $id = Auth::id();
 
         // $feed = Feed::where('poster_id',$id)
-        $feeds = User::find($id)
-            ->following()
+        $feeds = DB::table('user_followers')->where('follower_id',$id)
             ->join('feeds', 'feeds.poster_id', '=', 'user_followers.user_id')
-            ->leftJoin('events', function ($join) {
-                $join->on('user_followers.user_id', '=', 'events.user_id')
-                     ->where('feeds.type', 'event');
-            })
-            ->leftJoin('audio_posts', function ($join) {
-                $join->on('user_followers.user_id', '=', 'audio_posts.uploader_id')
-                     ->where('feeds.type', 'audio');
-            })
-            ->leftJoin('video_posts', function ($join) {
-                $join->on('user_followers.user_id', '=', 'video_posts.uploader_id')
-                     ->where('feeds.type', 'video');
-            })
-            ->leftJoin('posts', function ($join) {
-                $join->on('user_followers.user_id', '=', 'posts.user_id')
-                     ->where('feeds.type', 'post');
-            })
+//
+//            ->leftJoin('events', function ($join) {
+//                $join->on('user_followers.user_id', '=', 'events.user_id')
+//                    ->where('feeds.type', '=', 'event');
+//            })
+//            ->leftJoin('audio_posts', function ($join) {
+//                $join->on('user_followers.user_id', '=', 'audio_posts.uploader_id')
+//                    ->where('feeds.type', 'audio');
+//            })
+//            ->leftJoin('video_posts', function ($join) {
+//                $join->on('user_followers.user_id', '=', 'video_posts.uploader_id')
+//                    ->where('feeds.type', 'video');
+//            })
+//            ->leftJoin('posts', function ($join) {
+//                $join->on('user_followers.user_id', '=', 'posts.user_id')
+//                    ->where('feeds.type', 'post');
+//            })
             ->get();
         $result = new FeedCollection($feeds);
 

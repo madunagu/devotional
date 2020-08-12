@@ -60,7 +60,7 @@ class VideoPostController extends Controller
         return $video;
     }
 
-    public function getTrackFullText(AudioPost $audio): AudioPost
+    public function getTrackFullText(VideoPost $audio): VideoPost
     {
         if ($this->shouldTransrcibe) {
             //connect to google
@@ -118,7 +118,7 @@ class VideoPostController extends Controller
         $result = $this->getTrackDetails($data);
         $result= $this->getTrackFullText($result);
         $id = $request->route('id');
-        $result = AudioPost::find($id);
+        $result = VideoPost::find($id);
         //update result
         $result = $result->update($data);
 
@@ -133,7 +133,7 @@ class VideoPostController extends Controller
     public function get(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($audio = AudioPost::find($id)) {
+        if ($audio = VideoPost::find($id)) {
             return response()->json([
                 'data' => $audio
             ], 200);
@@ -154,7 +154,7 @@ class VideoPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioPost::where('audio_posts.id', '>', '0')->with('church')->with('author');
+        $audia = VideoPost::where('video_posts.id', '>', '0')->with('church')->with('author');
         if ($query) {
             $audia = $audia->search($query);
         }
@@ -169,7 +169,7 @@ class VideoPostController extends Controller
     public function delete(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($audio = AudioPost::find($id)) {
+        if ($audio = VideoPost::find($id)) {
             $audio->delete();
             return response()->json([
                 'data' => true

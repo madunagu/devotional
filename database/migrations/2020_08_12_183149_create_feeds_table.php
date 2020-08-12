@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Feeds extends Migration
+class CreateFeedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -19,6 +19,9 @@ class Feeds extends Migration
             $table->integer('item_id');
             $table->enum('poster', ['user', 'church', 'society']);
             $table->integer('poster_id');
+            $table->string('name')->nullable();
+            $table->integer('profile_media_id')->nullable();
+            $table->string('src_url')->nullable();
             $table->timestamps();
         });
     }

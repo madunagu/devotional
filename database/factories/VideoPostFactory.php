@@ -5,7 +5,7 @@
 use App\Model;
 use Faker\Generator as Faker;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(\App\VideoPost::class, function (Faker $faker) {
        return [
                 'name' => $faker->name,
                 'src_url' => Storage::url('video/Hillsong-Touch-Of-Heaven.mp3'),

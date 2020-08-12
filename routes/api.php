@@ -40,6 +40,13 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/audio-posts/{id}', 'AudioPostController@update');
     Route::delete('/audio-posts/{id}', 'AudioPostController@delete');
 
+
+    Route::get('/video-posts', 'VideoPostController@list');
+    Route::post('/video-posts', 'VideoPostController@create');
+    Route::get('/video-posts/{id}', 'VideoPostController@get');
+    Route::put('/video-posts/{id}', 'VideoPostController@update');
+    Route::delete('/video-posts/{id}', 'VideoPostController@delete');
+
     Route::get('/events', 'EventController@list');
     Route::post('/events', 'EventController@create');
     Route::get('/events/{id}', 'EventController@get');
