@@ -18,6 +18,7 @@ class FeedController extends Controller
         // $feed = Feed::where('poster_id',$id)
         $feeds = DB::table('user_followers')->where('follower_id',$id)
             ->join('feeds', 'feeds.poster_id', '=', 'user_followers.user_id')
+        ->get();
 //
 //            ->leftJoin('events', function ($join) {
 //                $join->on('user_followers.user_id', '=', 'events.user_id')
@@ -35,9 +36,11 @@ class FeedController extends Controller
 //                $join->on('user_followers.user_id', '=', 'posts.user_id')
 //                    ->where('feeds.type', 'post');
 //            })
-            ->get();
-        $result = new FeedCollection($feeds);
+//            ->paginate();
 
-        return response()->json($result);
+//        $feeds = User::find($id)->with('following')->with('feeds')->paginate();
+//        $result = new FeedCollection($feeds);
+
+        return response()->json($feeds);
     }
 }

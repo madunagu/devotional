@@ -39,13 +39,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function followers()
-    {
-        return $this->belongsToMany('App\User', 'user_followers', 'user_id', 'user_id');
-    }
-
     public function following()
     {
+        return $this->belongsToMany('App\User', 'user_followers', 'follower_id', 'user_id')->whereKeyNot(1);
+    }
+
+    public function followers()
+    {
         return $this->belongsToMany('App\User', 'user_followers', 'user_id', 'follower_id');
+    }
+
+    public  function feeds(){
+        return $this->hasMany('App\Feed','poster_id');
     }
 }
