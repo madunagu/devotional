@@ -73,7 +73,7 @@ class EventController extends Controller
     public function get(Request $request)
     {
         $id = (int) $request->route('id');
-        if ($event = Event::find($id)) {
+        if ($event = Event::find($id)->with('church')->with('address')->with('profileMedia')->with('hierarchyGroup')->with('user')->get()) {
             return response()->json([
                 'data' => $event
             ], 200);
@@ -112,13 +112,13 @@ class EventController extends Controller
         $isAttending = $request['isAttending'];
         $userId = Auth::id();
         $attended = DB::table('event_user')->where('event_id', $eventId)->where('user_id', $userId)->get();
-    
+
         if ($isAttending and empty($attended)) {
             $insert = DB::table('event_user')->insert(['event_id' => $eventId, 'user_id' => $userId]);
         } elseif ($attended and !$isAttending) {
             $attended->delete();
         }
-        
+
         return response()->json(['data' => true]);
     }
 

@@ -59,9 +59,9 @@ class HierarchyGroupController extends Controller
     public function get(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($HierarchyGroup = HierarchyGroup::find($id)) {
+        if ($hierarchyGroup = HierarchyGroup::find($id)->with('heirarchies')->get()) {
             return response()->json([
-            'data' => $HierarchyGroup
+            'data' => $hierarchyGroup
         ], 200);
         } else {
             return response()->json([
