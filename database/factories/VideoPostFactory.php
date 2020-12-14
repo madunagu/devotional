@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(\App\VideoPost::class, function (Faker $faker) {
        return [
                 'name' => $faker->name,
-                'src_url' => Storage::url('video/Hillsong-Touch-Of-Heaven.mp3'),
+                'src_url' => Storage::url('video/videoplayback.mp4'),
                 'full_text' => $faker->paragraph,
                 'description' => $faker->sentence,
                 'author_id' => 1,

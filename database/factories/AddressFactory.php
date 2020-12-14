@@ -7,7 +7,7 @@ $factory->define(Address::class, function (Faker $faker) {
   return [
       'id' => null,
       'address1' => $faker->streetAddress,
-      'address1' => $faker->streetAddress,
+      'address2' => $faker->streetAddress,
       'user_id'=> 1,
       'country' => $faker->country,
       'state' => $faker->state,

@@ -80,6 +80,12 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/societies/{id}', 'SocietyController@update');
     Route::delete('/societies/{id}', 'SocietyController@delete');
 
+    Route::get('/users', 'UserController@list');
+    Route::post('/users', 'UserController@create');
+    Route::get('/users/{id}', 'UserController@get');
+    Route::put('/users/{id}', 'UserController@update');
+    Route::delete('/users/{id}', 'UserController@delete');
+
     Route::get('/feed', 'FeedController@load');
 });
 

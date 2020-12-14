@@ -43,19 +43,19 @@ class AudioPostController extends Controller
         $result = AudioPost::create($data);
         //obtain length,size and details of audio
         $result = $this->getTrackDetails($result);
-        $result= $this->getTrackFullText($result);
+        $result = $this->getTrackFullText($result);
 
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 
     public function getTrackDetails(AudioPost $audio): AudioPost
     {
-        //here use libmp3 to get track details and update it
+        //TODO:here use libmp3 to get track details and update it
         //then return the object back
         return $audio;
     }
@@ -69,10 +69,10 @@ class AudioPostController extends Controller
 
             # The audio file's encoding, sample rate and language
             $config = new RecognitionConfig([
-            'encoding' => AudioEncoding::LINEAR16,
-            'sample_rate_hertz' => 32000,
-            'language_code' => 'en-US'
-        ]);
+                'encoding' => AudioEncoding::LINEAR16,
+                'sample_rate_hertz' => 32000,
+                'language_code' => 'en-US'
+            ]);
 
             # Instantiates a client
             $client = new SpeechClient();
@@ -87,7 +87,7 @@ class AudioPostController extends Controller
             }
             $client->close();
             //change audio to text
-        //save it then return object
+            //save it then return object
         }
         return $audio;
     }
@@ -116,7 +116,7 @@ class AudioPostController extends Controller
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
         $result = $this->getTrackDetails($data);
-        $result= $this->getTrackFullText($result);
+        $result = $this->getTrackFullText($result);
         $id = $request->route('id');
         $result = AudioPost::find($id);
         //update result
@@ -124,9 +124,9 @@ class AudioPostController extends Controller
 
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 

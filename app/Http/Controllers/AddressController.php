@@ -40,16 +40,16 @@ class AddressController extends Controller
         }
 
         if ($result) {
-            return response()->json(['data'=>$result], 201);
+            return response()->json(['data' => $result], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'=> 'integer|required|exists:addresses,id',
+            'id' => 'integer|required|exists:addresses,id',
             'address1' => 'string|required|max:255',
             'address2' => 'nullable|string|max:255',
             'country' => 'string|required|max:255',
@@ -77,14 +77,16 @@ class AddressController extends Controller
         }
         $result = $result->update($data);
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 
     public function find_address_geolocation(Address $address)
     {
+        $url = 'https://getgooglegeourl.com';
+        //TODO: find all geolocations for this address
     }
 
     public function get(Request $request)
@@ -94,7 +96,7 @@ class AddressController extends Controller
         // return response()->json([
         //         'data' => $address
         //     ], 200);
-       
+
         if ($address = Address::find($id)) {
             return response()->json([
                 'data' => $address
@@ -108,9 +110,21 @@ class AddressController extends Controller
 
     public function list(Request $request)
     {
-        //here insert search parameters and stuff
-        $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
-        $data = Address::paginate($length);
+        $validator = Validator::make($request->all(), [
+            'q' => 'nullable|string|min:1'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        $query = $request['q'];
+        $addresses = Address::where('id', '>', '1'); //TODO: check if this is a valid condition
+        if ($query) {
+            $addresses = $addresses->search($query);
+        }
+        $length = (int) (empty($request['perPage']) ? 15 : $request['perPage']);
+        $data = $addresses->paginate($length);
+
         return response()->json(compact('data'));
     }
 

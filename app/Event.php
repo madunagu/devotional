@@ -31,13 +31,13 @@ class Event extends Model
             'churches.description' => 1,
         ],
         'joins' => [
-            'addresses' => ['address_id','addresses.id'],
-            'profile_media' => ['profile_media_id','profile_media.id'],
-            'churches' => ['church_id','churches.id'],
+            'addresses' => ['address_id', 'addresses.id'],
+            'profile_media' => ['profile_media_id', 'profile_media.id'],
+            'churches' => ['church_id', 'churches.id'],
         ],
-     ];
+    ];
 
-    protected $fillable = ['name','church_id','starting_at','ending_at','address_id','hierarchy_group_id','profile_media_id','user_id'];
+    protected $fillable = ['name', 'church_id', 'starting_at', 'ending_at', 'address_id', 'hierarchy_group_id', 'profile_media_id', 'user_id'];
 
     public function address()
     {
@@ -54,11 +54,13 @@ class Event extends Model
         return $this->belongsTo('App\Church');
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo('App\User');
     }
 
-    public function hierarchyGroup(){
+    public function hierarchyGroup()
+    {
         return $this->belongsTo('App\HierarchyGroup');
     }
 }

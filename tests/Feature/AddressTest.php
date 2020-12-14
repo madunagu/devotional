@@ -37,6 +37,8 @@ class AddressTest extends CrudTest
      *
      * @var array
      */
+
+    protected $search = true;
     protected $store = [
 
     ];

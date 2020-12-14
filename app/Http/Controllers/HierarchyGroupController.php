@@ -30,6 +30,7 @@ class HierarchyGroupController extends Controller
             return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
         }
     }
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -91,12 +92,11 @@ class HierarchyGroupController extends Controller
         return response()->json($data);
     }
 
-
     public function delete(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($heirachy_group = HierarchyGroup::find($id)) {
-            $heirachy_group->delete();
+        if ($hierarchy_group = HierarchyGroup::find($id)) {
+            $hierarchy_group->delete();
             return response()->json([
             'data' => true
         ], 200);
@@ -106,4 +106,5 @@ class HierarchyGroupController extends Controller
         ], 404);
         }
     }
+
 }

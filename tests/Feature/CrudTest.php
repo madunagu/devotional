@@ -1,10 +1,12 @@
 <?php
+
 namespace Tests\Feature;
 
 use Tests\TestCase;
 use Tests\Traits\AttachJwtToken;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 abstract class CrudTest extends TestCase
 {
@@ -17,8 +19,7 @@ abstract class CrudTest extends TestCase
      */
     public function createPost()
     {
-        if($this->states)
-        {
+        if ($this->states) {
             //return factory($this->model)->states($this->states)->create();
             return factory($this->model)->create();
         }
@@ -75,8 +76,7 @@ abstract class CrudTest extends TestCase
         /**
          * Pass in any extra data
          */
-        if($this->store)
-        {
+        if ($this->store) {
             $activity = array_merge($activity, $this->store);
         }
         $response = $this->json('POST', "api/{$this->endpoint}/", $activity);
@@ -100,5 +100,22 @@ abstract class CrudTest extends TestCase
         $response = $this->json('DELETE', "api/{$this->endpoint}/{$activity->id}");
         $response
             ->assertStatus(200);
+    }
+
+    public function testSearch()
+    {
+        $search = 'por';
+        $response = $this->json('GET', "api/{$this->endpoint}", ['q' => $search]);
+        if (isset($this->search)) {
+            $response
+                ->assertStatus(200)
+                ->assertJson([
+                    'data' => []
+                ]);
+        } else {
+
+            $response
+                ->assertStatus(200);
+        }
     }
 }
