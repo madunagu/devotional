@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommentGroupsTable extends Migration
+class CreateViewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateCommentGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comment_groups', function (Blueprint $table) {
+        Schema::create('views', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id');
+            $table->integer('viewable_id');
+            $table->string('viewable_type');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateCommentGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comment_groups');
+        Schema::dropIfExists('views');
     }
 }

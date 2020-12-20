@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Validator;
 
 use Google\Cloud\Speech\V1\SpeechClient;
@@ -12,10 +13,13 @@ use Google\Cloud\Speech\V1\RecognitionConfig;
 use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 
 use App\AudioPost;
+use App\Traits\Interactable;
 use App\Http\Resources\AudioPostCollection;
 
 class AudioPostController extends Controller
 {
+    use Interactable;
+
     public $shouldTransrcibe = false;
 
     public function create(Request $request)
@@ -38,15 +42,18 @@ class AudioPostController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
+
         $data = collect($request->all())->toArray();
+
         $data['uploader_id'] = Auth::user()->id;
-        $result = AudioPost::create($data);
+        $audio = AudioPost::create($data);
+        $interacted = $this->saveRelated($data, $audio);
         //obtain length,size and details of audio
-        $result = $this->getTrackDetails($result);
-        $result = $this->getTrackFullText($result);
+        $audio = $this->getTrackDetails($audio);
+        $audio = $this->getTrackFullText($audio);
 
 
-        if ($result) {
+        if ($audio) {
             return response()->json(['data' => true], 201);
         } else {
             return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
@@ -115,10 +122,11 @@ class AudioPostController extends Controller
 
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
-        $result = $this->getTrackDetails($data);
-        $result = $this->getTrackFullText($result);
+
         $id = $request->route('id');
         $result = AudioPost::find($id);
+        $result = $this->getTrackDetails($result);
+        $result = $this->getTrackFullText($result);
         //update result
         $result = $result->update($data);
 
@@ -133,7 +141,26 @@ class AudioPostController extends Controller
     public function get(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($audio = AudioPost::find($id)) {
+        $userId = Auth::user()->id;
+        if ($audio = AudioPost::withCount('comments')
+            ->with(['comments','author','user','churches','addresses'])
+            ->withCount([
+                'likes',
+                'likes as liked' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])->withCount([
+                'views',
+                'views as viewed' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])->find($id)
+        ) {
+            $audio->views()->create([
+                'user_id' => $userId,
+                'viewable_id' => $id,
+                'viewable_type' => 'audio'
+            ]);
             return response()->json([
                 'data' => $audio
             ], 200);
@@ -154,7 +181,7 @@ class AudioPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioPost::where('audio_posts.id', '>', '0')->with('church')->with('author');
+        $audia = AudioPost::with('author','user','profileMedia');
         if ($query) {
             $audia = $audia->search($query);
         }

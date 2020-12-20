@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Validator;
 
 use Google\Cloud\Speech\V1\SpeechClient;
@@ -13,9 +14,11 @@ use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 
 use App\VideoPost;
 use App\Http\Resources\AudioPostCollection;
+use App\Traits\Interactable;
 
 class VideoPostController extends Controller
 {
+    use Interactable;
     public $shouldTransrcibe = false;
 
     public function create(Request $request)
@@ -40,9 +43,11 @@ class VideoPostController extends Controller
 
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
-        $result = VideoPost::create($data);
+        $video = VideoPost::create($data);
+        
+        $interacted = $this->saveRelated($data, $video);
         //obtain length,size and details of audio
-        $result = $this->getTrackDetails($result);
+        $result = $this->getTrackDetails($video);
         $result= $this->getTrackFullText($result);
 
 
@@ -115,11 +120,11 @@ class VideoPostController extends Controller
 
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
-        $result = $this->getTrackDetails($data);
-        $result= $this->getTrackFullText($result);
         $id = $request->route('id');
         $result = VideoPost::find($id);
         //update result
+        $result = $this->getTrackDetails($result);
+        $result= $this->getTrackFullText($result);
         $result = $result->update($data);
 
 
@@ -133,7 +138,21 @@ class VideoPostController extends Controller
     public function get(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($audio = VideoPost::find($id)) {
+        $userId = Auth::user()->id;
+        if ($audio = VideoPost::withCount('comments')
+            ->with(['comments','author','user','churches','addresses'])
+            ->withCount([
+                'likes',
+                'likes as liked' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])->withCount([
+                'views',
+                'views as viewed' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])
+            ->find($id)) {
             return response()->json([
                 'data' => $audio
             ], 200);
@@ -154,7 +173,7 @@ class VideoPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = VideoPost::where('video_posts.id', '>', '0')->with('church')->with('author');
+        $audia = VideoPost::with('churches','author','user');
         if ($query) {
             $audia = $audia->search($query);
         }

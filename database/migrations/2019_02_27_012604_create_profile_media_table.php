@@ -20,6 +20,8 @@ class CreateProfileMediaTable extends Migration
             $table->string('background_image_url')->nullable();
             $table->string('color_choice')->nullable();
             $table->integer('user_id');
+            $table->integer('profile_mediaable_id')->nullable();
+            $table->string('profile_mediaable_type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

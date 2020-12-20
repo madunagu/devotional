@@ -44,4 +44,14 @@ class Address extends Model
         'latitude',
         'user_id'
     ];
+
+    public function churches()
+    {
+        return $this->morphToMany(Church::class, 'churchable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
 }

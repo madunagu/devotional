@@ -26,7 +26,7 @@ class ProfileMediaController extends Controller
         }
 
         $data = collect($request->all())->toArray();
-        $data['uploader_id'] = Auth::user()->id;
+        $data['user_id'] = Auth::user()->id;
         $result = ProfileMedia::create($data);
 
         if ($result) {

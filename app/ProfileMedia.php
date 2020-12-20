@@ -11,7 +11,7 @@ class ProfileMedia extends Model
 {
     use SoftDeletes, HasImageUploads;
 
-    protected $fillable = ['logo_url','profile_image_url','background_image_url','color_choice','user_id'];
+    protected $fillable = ['logo_url', 'profile_image_url', 'background_image_url', 'color_choice', 'user_id'];
 
     // assuming `users` table has 'cover', 'avatar' columns
     // mark all the columns as image fields
@@ -72,4 +72,9 @@ class ProfileMedia extends Model
         ],
 
     ];
+
+    public function profileMediaable()
+    {
+        return $this->morphTo();
+    }
 }

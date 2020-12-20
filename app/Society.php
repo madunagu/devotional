@@ -24,25 +24,48 @@ class Society extends Model
             'societies.description' => 5,
         ],
         'joins' => [
-            'profile_media' => ['profile_media_id','profile_media.id'],
-            'churches' => ['church_id','churches.id'],
+            'profile_media' => ['profile_media_id', 'profile_media.id'],
+            'churches' => ['church_id', 'churches.id'],
         ],
-     ];
+    ];
 
-    protected $fillable = ['name','church_id','parent_id','closed','profile_media_id','user_id','hierarchy_group_id','description'];
+    protected $fillable = [
+        'name', 'parent_id', 'closed', 'user_id', 'description',
+    ];
 
     public function profileMedia()
     {
-        return $this->belongsTo('App\ProfileMedia');
+        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
     }
 
-    public function church()
+     
+    public function churches()
     {
-        return $this->belongsTo('App\Church');
+        return $this->morphToMany('App\Church', 'churchable');
     }
 
     public function HierarchyGroup()
     {
         return $this->belongsTo('App\HierarchyGroup');
+    }
+
+    public function addresses()
+    {
+        return $this->morphToMany('App\Address','addressable','addressables');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+    
+    public function infoCard()
+    {
+        return $this->morphMany(InfoCard::class, 'info_cardable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
     }
 }

@@ -37,16 +37,32 @@ class Event extends Model
         ],
     ];
 
-    protected $fillable = ['name', 'church_id', 'starting_at', 'ending_at', 'address_id', 'hierarchy_group_id', 'profile_media_id', 'user_id'];
+    protected $fillable = [
+        'name', 'starting_at', 'ending_at','description', 'user_id',
+    ];
 
-    public function address()
+    public function addresses()
     {
-        return $this->belongsTo('App\Address');
+        return $this->morphToMany('App\Address', 'addressable', 'addressables');
+    }
+
+    public function attendees(){
+        return $this->belongsToMany('App\User', 'event_user');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
     }
 
     public function profileMedia()
     {
-        return $this->belongsTo('App\ProfileMedia');
+        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
     }
 
     public function church()
@@ -58,9 +74,19 @@ class Event extends Model
     {
         return $this->belongsTo('App\User');
     }
-
-    public function hierarchyGroup()
+    
+    public function churches()
     {
-        return $this->belongsTo('App\HierarchyGroup');
+        return $this->morphToMany('App\Church', 'churchable','churchables');
+    }
+    
+    public function hierarchyGroups()
+    {
+        return $this->morphToMany('App\HierarchyGroup', 'hierarchyable','hierarchyables');
+    }
+
+        public function views()
+    {
+        return $this->morphMany('App\View', 'viewable');
     }
 }

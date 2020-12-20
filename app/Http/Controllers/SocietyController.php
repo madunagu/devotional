@@ -8,9 +8,11 @@ use Validator;
 
 use App\Society;
 use App\Http\Resources\SocietyCollection;
+use App\Traits\Interactable;
 
 class SocietyController extends Controller
 {
+    use Interactable;
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -27,9 +29,11 @@ class SocietyController extends Controller
         }
 
         $data = collect($request->all())->toArray();
+
         $data['user_id'] = Auth::user()->id;
 
         $result = Society::create($data);
+        $saved = $this->saveRelated($data,$result);
         //here add current user as member of society
 
 

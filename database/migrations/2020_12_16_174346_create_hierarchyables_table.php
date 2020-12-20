@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLikeGroupsTable extends Migration
+class CreateHierarchyablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLikeGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('like_groups', function (Blueprint $table) {
+        Schema::create('hierarchyables', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateLikeGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('like_groups');
+        Schema::dropIfExists('hierarchyables');
     }
 }

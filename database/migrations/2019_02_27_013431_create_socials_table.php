@@ -22,6 +22,8 @@ class CreateSocialsTable extends Migration
             $table->string('rss_url')->nullable();
             $table->string('snapchat_url')->nullable();
             $table->string('website_url')->nullable();
+            $table->integer('socialable_id');
+            $table->string('socialable_type');
             $table->timestamps();
         });
     }

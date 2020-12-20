@@ -69,4 +69,15 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Feed', 'poster_id');
     }
+
+    public function infoCard()
+    {
+        return $this->morphMany(InfoCard::class, 'info_cardable');
+    }
+
+    public function profileMedia()
+    {
+        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+    }
+
 }

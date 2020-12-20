@@ -31,22 +31,25 @@ class Church extends Model
             'churches.description' => 1,
         ],
         'joins' => [
-            'addresses' => ['churches.address_id','addresses.id'],
-            'profile_media' => ['churches.profile_media_id','profile_media.id'],
-            'users' => ['churches.user_id','users.id'],
+            'addresses' => ['churches.address_id', 'addresses.id'],
+            'profile_media' => ['churches.profile_media_id', 'profile_media.id'],
+            'users' => ['churches.user_id', 'users.id'],
         ],
-     ];
+    ];
 
-    protected $fillable = ['name','alternate_name','parent_id','leader_id','user_id','address_id','profile_media_id','slogan','description','hierarchy_group_id'];
+    protected $fillable = [
+        'name', 'alternate_name', 'parent_id', 'leader_id', 'user_id', 'slogan', 'description', 
+      
+    ];
 
-    public function address()
+    public function addresses()
     {
-        return $this->belongsTo('App\Address');
+        return $this->morphToMany('App\Address','addressable');
     }
 
     public function profileMedia()
     {
-        return $this->belongsTo('App\ProfileMedia');
+        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
     }
 
     public function hierarchyGroup()
@@ -58,4 +61,34 @@ class Church extends Model
     {
         return $this->belongsTo('App\User', 'leader_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'leader_id');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+    
+    public function infoCard()
+    {
+        return $this->morphMany(InfoCard::class, 'info_cardable');
+    }
+
+    public function churchable(){
+        return $this->morphTo();
+    }
+        
+    public function views()
+    {
+        return $this->morphMany('App\View', 'viewable');
+    }
+
 }

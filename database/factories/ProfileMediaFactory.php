@@ -9,6 +9,8 @@ $factory->define(ProfileMedia::class, function (Faker $faker) {
         'profile_image_url'=> $faker->imageUrl('500,500'),
         'background_image_url'=> $faker->imageUrl('500,500'),
         'color_choice'=> $faker->colorName,
+        'profile_mediable_id'=> random_int(1,10),
+        'profile_mediable_type'=>'video',
         'user_id'=>1
     ];
 });

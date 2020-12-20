@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
 use App\Church;
 use App\Http\Resources\ChurchCollection;
+use App\Traits\Interactable;
 
 class ChurchController extends Controller
 {
+    use Interactable;
     public function create(Request $request)
     {
         $validationMessages = [
@@ -33,12 +36,13 @@ class ChurchController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
-        $data = collect(request()->all())->toArray();
+        $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
         $result = Church::create($data);
 
+        $saved = $this->saveRelated($data, $result);
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => $saved], 201);
         } else {
             return response()->json(false, 500);
         }
@@ -75,6 +79,7 @@ class ChurchController extends Controller
 
         $church = Church::find($id);
 
+        $saved = $this->saveRelated($church);
         $result = $church->update($data);
 
         if ($result) {
@@ -86,8 +91,32 @@ class ChurchController extends Controller
 
     public function get(Request $request)
     {
+        $userId = Auth::user()->id;
         $id = (int)$request->route('id');
-        if ($church = Church::find($id)) {
+        if ($church = Church::withCount('comments')
+            ->with('comments')
+            ->with('leader')
+            ->with('user')
+            ->with('addresses')
+            ->with('profileMedia')
+            ->withCount([
+                'likes',
+                'likes as liked' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])->withCount([
+                'views',
+                'views as viewed' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])->find($id)
+
+        ) {
+            $church->views()->create([
+                'user_id' => $userId,
+                'viewable_id' => $id,
+                'viewable_type' => 'audio'
+            ]);
             return response()->json([
                 'data' => $church
             ], 200);
@@ -112,17 +141,17 @@ class ChurchController extends Controller
         $hq = $request['hq'];
         // parent_id  is set when searching through the children of a particular mother church
         $parent_id = (int)$request['parent_id'];
-        $churches = Church::where('churches.id','>','0')->with('address')->with('profileMedia');
-        if($query){
+        $churches = Church::where('churches.id', '>', '0')->with('addresses')->with('profileMedia');
+        if ($query) {
             $churches = $churches->search($query);
         }
 
-        if($hq){
-            $churches->where('parent_id','0');
+        if ($hq) {
+            $churches->where('parent_id', '0');
         }
 
-        if($parent_id){
-            $churches->where('parent_id',$parent_id);
+        if ($parent_id) {
+            $churches->where('parent_id', $parent_id);
         }
         //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);

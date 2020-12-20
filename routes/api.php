@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +28,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/churches/{id}', 'ChurchController@get');
     Route::put('/churches/{id}', 'ChurchController@update');
     Route::delete('/churches/{id}', 'ChurchController@delete');
+    Route::post('/churches/{id}', 'ChurchController@like');
 
     Route::get('/addresses', 'AddressController@list');
     Route::post('/addresses', 'AddressController@create');
@@ -39,6 +41,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/audio-posts/{id}', 'AudioPostController@get');
     Route::put('/audio-posts/{id}', 'AudioPostController@update');
     Route::delete('/audio-posts/{id}', 'AudioPostController@delete');
+    Route::post('/audio-posts/{id}', 'AudioPostController@like');
 
 
     Route::get('/video-posts', 'VideoPostController@list');
@@ -46,6 +49,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/video-posts/{id}', 'VideoPostController@get');
     Route::put('/video-posts/{id}', 'VideoPostController@update');
     Route::delete('/video-posts/{id}', 'VideoPostController@delete');
+    Route::post('/video-posts/{id}', 'VideoPostController@like');
 
     Route::get('/events', 'EventController@list');
     Route::post('/events', 'EventController@create');
@@ -79,6 +83,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/societies/{id}', 'SocietyController@get');
     Route::put('/societies/{id}', 'SocietyController@update');
     Route::delete('/societies/{id}', 'SocietyController@delete');
+    Route::post('/societies/{id}', 'SocietyController@like');
 
     Route::get('/users', 'UserController@list');
     Route::post('/users', 'UserController@create');
@@ -86,7 +91,14 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/users/{id}', 'UserController@update');
     Route::delete('/users/{id}', 'UserController@delete');
 
+    Route::get('/comments', 'CommentController@list');
+    Route::post('/comments', 'CommentController@create');
+    Route::get('/comments/{id}', 'CommentController@get');
+    Route::put('/comments/{id}', 'CommentController@update');
+    Route::delete('/comments/{id}', 'CommentController@delete');
+    Route::post('/comments/{id}', 'CommentController@like');
+    
+
+
     Route::get('/feed', 'FeedController@load');
 });
-
-

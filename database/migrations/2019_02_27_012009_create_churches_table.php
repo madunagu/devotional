@@ -20,9 +20,6 @@ class CreateChurchesTable extends Migration
             $table->string('parent_id')->default(0);
             $table->integer('user_id');
             $table->integer('leader_id')->nullable();
-            $table->integer('hierarchy_group_id')->nullable();
-            $table->integer('address_id')->nullable();
-            $table->integer('profile_media_id')->nullable();
             $table->string('slogan')->nullable();
             $table->text('description')->nullable();
             $table->boolean('verified')->default(0);

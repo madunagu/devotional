@@ -25,26 +25,67 @@ class AudioPost extends Model
             'audio_posts.full_text' => 2,
         ],
         'joins' => [
-            'addresses' => ['address_id','addresses.id'],
-            'profile_media' => ['profile_media_id','profile_media.id'],
-            'churches' => ['church_id','churches.id'],
+            'addresses' => ['address_id', 'addresses.id'],
+            'profile_media' => ['profile_media_id', 'profile_media.id'],
+            'churches' => ['church_id', 'churches.id'],
         ],
-     ];
+    ];
 
-    protected $fillable = ['name','src_url','full_text','description','author_id','uploader_id','church_id','size','length','profile_media_id', 'language','address_id'];
+    protected $fillable = [
+        'name',
+        'src_url',
+        'full_text',
+        'description',
+        'author_id',
+        'uploader_id',
+        'size',
+        'length',
+        'language',
+   
+    ];
 
     public function profileMedia()
     {
-        return $this->belongsTo('App\ProfileMedia');
-    }
-
-    public function church()
-    {
-        return $this->belongsTo('App\Church');
+        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
     }
 
     public function author()
     {
         return $this->belongsTo('App\User', 'author_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'uploader_id');
+    }
+
+    public function addresses()
+    {
+        return $this->morphToMany('App\Address','addressable','addressables');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany('App\Comment', 'commentable');
+    }
+
+    public function infoCards()
+    {
+        return $this->morphMany(InfoCard::class, 'info_cardable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+    
+    public function views()
+    {
+        return $this->morphMany('App\View', 'viewable');
+    }
+
+    public function churches()
+    {
+        return $this->morphToMany('App\Church', 'churchable');
     }
 }

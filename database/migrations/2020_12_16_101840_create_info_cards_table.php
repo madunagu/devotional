@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSocietiesTable extends Migration
+class CreateInfoCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateSocietiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('societies', function (Blueprint $table) {
+        Schema::create('info_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('parent_id')->nullable();
-            $table->boolean('closed')->default(true);
-            $table->integer('user_id');
-            $table->string('description')->nullable();
+            $table->string('title');
+            $table->text('body');
+            $table->integer('info_cardable_id');
+            $table->string('info_cardable_type');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +31,6 @@ class CreateSocietiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('societies');
+        Schema::dropIfExists('info_cards');
     }
 }

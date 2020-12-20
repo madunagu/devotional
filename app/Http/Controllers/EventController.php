@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Validator;
 
 use App\Event;
 use App\Http\Resources\EventCollection;
+use App\Traits\Interactable;
 use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+    use Interactable;
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,6 +35,7 @@ class EventController extends Controller
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
         $result = Event::create($data);
+        $saved = $this->saveRelated($data,$result);
         //create event emmiter or reminder or notifications for those who may be interested
 
         if ($result) {
@@ -73,7 +78,25 @@ class EventController extends Controller
     public function get(Request $request)
     {
         $id = (int) $request->route('id');
-        if ($event = Event::find($id)->with('church')->with('address')->with('profileMedia')->with('hierarchyGroup')->with('user')->get()) {
+        $userId = Auth::user()->id;
+        if ($event = Event::withCount('comments')
+            ->with(['comments', 'user', 'churches', 'addresses', 'attendees'])
+            ->with(['attendees' => function ($query) {
+                $query->limit(7);
+            }])
+            ->withCount([
+                'attendees',
+                'attendees as attending' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])
+            ->withCount([
+                'views',
+                'views as viewed' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ])->find($id)
+        ) {
             return response()->json([
                 'data' => $event
             ], 200);
@@ -94,7 +117,7 @@ class EventController extends Controller
         }
 
         $query = $request['q'];
-        $events = Event::with('user')->with('church')->with('address')->with('profileMedia'); //TODO: add participants to the search using heirarchies
+        $events = Event::with('user')->with('profileMedia'); //TODO: add participants to the search using heirarchies
         if ($query) {
             $events = $events->search($query);
         }
@@ -108,30 +131,14 @@ class EventController extends Controller
     // this is a bool function
     public function attend(Request $request)
     {
-        $eventId = $request->route('id');
-        $isAttending = $request['isAttending'];
+        $id = $request->route('id');
         $userId = Auth::id();
-        $attended = DB::table('event_user')->where('event_id', $eventId)->where('user_id', $userId)->get();
+        $event = Event::find((int)$id);
+        $event->attendees()->toggle($userId);
 
-        if ($isAttending and empty($attended)) {
-            $insert = DB::table('event_user')->insert(['event_id' => $eventId, 'user_id' => $userId]);
-        } elseif ($attended and !$isAttending) {
-            $attended->delete();
-        }
 
         return response()->json(['data' => true]);
     }
-
-    public function absent(Request $request)
-    {
-        $eventId = $request->route('id');
-        $userId = Auth::id();
-        $insert = DB::table('event_user')->where('event_id', $eventId)->where('user_id', $userId)->delete();
-        if ($insert) {
-            return response()->json(['data' => true]);
-        }
-    }
-
 
 
     public function delete(Request $request)

@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
+use App\Traits\Interactable;
+use App\Traits\Orderable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
-use App\Address;
 
-class AddressController extends Controller
+class CommentController extends Controller
 {
+    use Interactable, Orderable;
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'address1' => 'string|required|max:255',
-            'address2' => 'nullable|string|max:255',
-            'country' => 'string|required|max:255',
-            'state' => 'string|required|max:255',
-            'city' => 'string|required|max:255',
-            'postal_code' => 'nullable|string|max:20',
-            'default_address' => 'nullable|boolean',
-            'name' =>  'nullable|string|max:255',
-            'longitude' => 'nullable|numeric|max:255',
-            'latitude' => 'nullable|numeric|max:255'
+            'comment' => 'string|required',
+            'parent_id' => 'nullable|numeric|max:255',
+            'commentable_id' => 'numeric',
+            'commentable_type' => 'string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -32,16 +30,8 @@ class AddressController extends Controller
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
 
-        $result = Address::create($data);
-        //obtain longitude and latitude if they werent set
-        if (!$result->longitude || !$result->latitude) {
-            //queue set latitude and longitude event
-            $coor = $this->find_address_geolocation($result);
-
-            $result->longitude = $coor[0];
-            $result->latitude = $coor[1];
-            $result->update();
-        }
+        $result = Comment::create($data);
+        //TODO: notify relevant users of activity
 
         if ($result) {
             return response()->json(['data' => $result], 201);
@@ -54,16 +44,9 @@ class AddressController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'integer|required|exists:addresses,id',
-            'address1' => 'string|required|max:255',
-            'address2' => 'nullable|string|max:255',
-            'country' => 'string|required|max:255',
-            'state' => 'string|required|max:255',
-            'city' => 'string|required|max:255',
-            'postal_code' => 'nullable|integer|max:20',
-            'default_address' => 'nullable|boolean',
-            'name' =>  'nullable|string|max:255',
-            'longitude' => 'nullable|float|max:255',
-            'latitude' => 'nullable|float|max:255'
+            'parent_id' => 'nullable|numeric|max:255',
+            'comment_group_id' => 'numeric|exists:comment_groups,id',
+
         ]);
 
         if ($validator->fails()) {
@@ -71,15 +54,10 @@ class AddressController extends Controller
         }
         $id = $request->route('id');
 
-// TODO: find the neccessity of checking the user id
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
-        $result = Address::find($id);
-        //obtain longitude and latitude if they werent set
-        if (!$result->longitude || !$result->latitude) {
-            //que set latitude and longitude event
-            $this->find_address_geolocation($result);
-        }
+        $result = Comment::find($id);
+
         $result = $result->update($data);
         if ($result) {
             return response()->json(['data' => true], 201);
@@ -88,7 +66,7 @@ class AddressController extends Controller
         }
     }
 
-    public function find_address_geolocation(Address $address)
+    public function notify_relevant(Comment $comment)
     {
         $url = 'https://getgooglegeourl.com';
         //TODO: find all geolocations for this address
@@ -102,9 +80,9 @@ class AddressController extends Controller
         //         'data' => $address
         //     ], 200);
 
-        if ($address = Address::find($id)) {
+        if ($comment = Comment::find($id)) {
             return response()->json([
-                'data' => $address
+                'data' => $comment
             ], 200);
         } else {
             return response()->json([
@@ -116,19 +94,31 @@ class AddressController extends Controller
     public function list(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'q' => 'nullable|string|min:1'
+            'q' => 'nullable|string|min:1',
+            'o' => 'nullable|string|min:1',
+            'd' => 'nullable|string|min:1'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
 
-        $query = $request['q'];
-        $addresses = Address::where('id', '>', '1'); //TODO: check if this is a valid condition
-        if ($query) {
-            $addresses = $addresses->search($query);
-        }
+        $params = $data = collect($request->all())->toArray();
+        $orderParams = $this->orderParams($params);
+
+
+        $comments =
+            DB::table('comments')
+            ->select('comments.id', 'comments.comment', 'comments.user_id', DB::raw('COUNT(cc.id ) AS comments'), DB::raw('COUNT(likes.id) AS likes'))
+            ->leftJoin('comments AS cc', 'comments.parent_id', '=', 'comments.id')
+            ->leftJoin('likes', 'comments.like_group_id', '=', 'likes.like_group_id')
+            ->groupBy('comments.parent_id')
+            ->groupBy('likes.like_group_id')
+            ->orderBy('comments.' . $orderParams->order,  $orderParams->direction)
+            ->get();
+        //TODO: check if this is a valid condition
+
         $length = (int) (empty($request['perPage']) ? 15 : $request['perPage']);
-        $data = $addresses->paginate($length);
+        $data = $comments->paginate($length);
 
         return response()->json(compact('data'));
     }
@@ -136,8 +126,8 @@ class AddressController extends Controller
     public function delete(Request $request)
     {
         $id = (int)$request->route('id');
-        if ($address = Address::find($id)) {
-            $address->delete();
+        if ($comment = Comment::find($id)) {
+            $comment->delete();
             return response()->json([
                 'data' => true
             ], 200);
