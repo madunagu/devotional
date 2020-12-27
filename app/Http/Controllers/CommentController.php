@@ -104,23 +104,13 @@ class CommentController extends Controller
 
         $params = $data = collect($request->all())->toArray();
         $orderParams = $this->orderParams($params);
-
-
-        $comments =
-            DB::table('comments')
-            ->select('comments.id', 'comments.comment', 'comments.user_id', DB::raw('COUNT(cc.id ) AS comments'), DB::raw('COUNT(likes.id) AS likes'))
-            ->leftJoin('comments AS cc', 'comments.parent_id', '=', 'comments.id')
-            ->leftJoin('likes', 'comments.like_group_id', '=', 'likes.like_group_id')
-            ->groupBy('comments.parent_id')
-            ->groupBy('likes.like_group_id')
-            ->orderBy('comments.' . $orderParams->order,  $orderParams->direction)
-            ->get();
-        //TODO: check if this is a valid condition
-
         $length = (int) (empty($request['perPage']) ? 15 : $request['perPage']);
-        $data = $comments->paginate($length);
 
-        return response()->json(compact('data'));
+        $comments = Comment::with('user')->withCount('likes')
+            ->orderBy('comments.' . $orderParams->order,  $orderParams->direction)
+            ->paginate($length);
+
+        return response()->json($comments);
     }
 
     public function delete(Request $request)

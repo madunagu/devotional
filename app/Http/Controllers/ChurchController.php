@@ -143,7 +143,8 @@ class ChurchController extends Controller
         $parent_id = (int)$request['parent_id'];
         $churches = Church::where('churches.id', '>', '0')->with('addresses')->with('profileMedia');
         if ($query) {
-            $churches = $churches->search($query);
+            // $churches = $churches->search($query);
+            $churches = Church::search($query)->get();
         }
 
         if ($hq) {
@@ -155,9 +156,9 @@ class ChurchController extends Controller
         }
         //here insert search parameters and stuff
         $length = (int)(empty($request['perPage']) ? 15 : $request['perPage']);
-        $churches = $churches->paginate($length);
-        $data = new ChurchCollection($churches);
-        return response()->json($data);
+        // $churches = $churches->paginate($length);
+        // $data = new ChurchCollection($churches);
+        return response()->json($churches);
     }
 
     public function delete(Request $request)

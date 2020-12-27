@@ -15,13 +15,14 @@ class CreateFeedsTable extends Migration
     {
         Schema::create('feeds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('type', ['post', 'video', 'audio', 'text','event']);
-            $table->integer('item_id');
-            $table->enum('poster', ['user', 'church', 'society']);
-            $table->integer('poster_id');
-            $table->string('name')->nullable();
-            $table->integer('profile_media_id')->nullable();
-            $table->string('src_url')->nullable();
+            $table->enum('parentable_type', ['post', 'video', 'audio', 'text','event']);
+            // $table->integer('item_id');
+            $table->enum('postable_type', ['user', 'church', 'society']);
+            $table->integer('postable_id');
+            // $table->string('name')->nullable();
+            // $table->integer('profile_media_id')->nullable();
+            // $table->string('src_url')->nullable();
+            $table->integer('parentable_id');
             $table->timestamps();
         });
     }

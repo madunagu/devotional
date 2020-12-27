@@ -2,45 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\AudioPost;
+use App\Event;
 use App\Feed;
 use App\Http\Resources\FeedCollection;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class FeedController extends Controller
 {
     public function load(Request $request)
     {
-        $id = Auth::id();
+        $user = Auth::user();
+        $following = $user->following()->pluck('user_id');
+        $feeds = Feed::with('parentable')->whereIn('postable_id', $following)->orderBy('created_at', 'desc')->paginate();
+        $result = new FeedCollection($feeds);
+        return response()->json($result);
+    }
 
-        // $feed = Feed::where('poster_id',$id)
-        $feeds = DB::table('user_followers')->where('follower_id',$id)
-            ->join('feeds', 'feeds.poster_id', '=', 'user_followers.user_id')
-        ->get();
-//
-//            ->leftJoin('events', function ($join) {
-//                $join->on('user_followers.user_id', '=', 'events.user_id')
-//                    ->where('feeds.type', '=', 'event');
-//            })
-//            ->leftJoin('audio_posts', function ($join) {
-//                $join->on('user_followers.user_id', '=', 'audio_posts.uploader_id')
-//                    ->where('feeds.type', 'audio');
-//            })
-//            ->leftJoin('video_posts', function ($join) {
-//                $join->on('user_followers.user_id', '=', 'video_posts.uploader_id')
-//                    ->where('feeds.type', 'video');
-//            })
-//            ->leftJoin('posts', function ($join) {
-//                $join->on('user_followers.user_id', '=', 'posts.user_id')
-//                    ->where('feeds.type', 'post');
-//            })
-//            ->paginate();
-
-//        $feeds = User::find($id)->with('following')->with('feeds')->paginate();
-//        $result = new FeedCollection($feeds);
-
-        return response()->json($feeds);
+    public function populate()
+    {
     }
 }

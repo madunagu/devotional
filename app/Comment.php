@@ -11,12 +11,16 @@ class Comment extends Model
         'commentable_type',
         'comment',
         'parent_id',
-        'user_',
+        'user_id',
     ];
 
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\User');
     }
 
     public function commentable()

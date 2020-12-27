@@ -29,12 +29,16 @@ class Church extends Model
             'churches.alternate_name' => 5,
             'churches.slogan' => 2,
             'churches.description' => 1,
+            'churches.id' => 1,
+            'churches.parent_id' => 1,
+            'churches.leader_id' => 1,
+            'churches.user_id' => 1,
         ],
-        'joins' => [
-            'addresses' => ['churches.address_id', 'addresses.id'],
-            'profile_media' => ['churches.profile_media_id', 'profile_media.id'],
-            'users' => ['churches.user_id', 'users.id'],
-        ],
+        // 'joins' => [
+        //     'addresses' => ['churches.address_id', 'addresses.id'],
+        //     'profile_media' => ['churches.profile_media_id', 'profile_media.id'],
+        //     'users' => ['churches.user_id', 'users.id'],
+        // ],
     ];
 
     protected $fillable = [
