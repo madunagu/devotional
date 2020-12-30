@@ -31,9 +31,7 @@ class Event extends Model
             'churches.description' => 1,
         ],
         'joins' => [
-            'addresses' => ['address_id', 'addresses.id'],
-            'profile_media' => ['profile_media_id', 'profile_media.id'],
-            'churches' => ['church_id', 'churches.id'],
+         
         ],
     ];
 

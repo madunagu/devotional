@@ -69,7 +69,6 @@ class CommentController extends Controller
     public function notify_relevant(Comment $comment)
     {
         $url = 'https://getgooglegeourl.com';
-        //TODO: find all geolocations for this address
     }
 
     public function get(Request $request)

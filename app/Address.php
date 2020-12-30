@@ -54,4 +54,9 @@ class Address extends Model
     {
         return $this->morphMany(Like::class, 'likeable');
     }
+
+    public function toString()
+    {
+        return $this->address1 . $this->address2 . $this->city . $this->state;
+    }
 }

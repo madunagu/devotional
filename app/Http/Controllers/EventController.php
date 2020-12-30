@@ -118,7 +118,7 @@ class EventController extends Controller
 
         $query = $request['q'];
         $events = Event::with('user')->with('profileMedia'); //TODO: add participants to the search using heirarchies
-        if ($query) {
+        if (!empty($query)) {
             $events = $events->search($query);
         }
         //here insert search parameters and stuff

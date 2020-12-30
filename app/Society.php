@@ -24,8 +24,6 @@ class Society extends Model
             'societies.description' => 5,
         ],
         'joins' => [
-            'profile_media' => ['profile_media_id', 'profile_media.id'],
-            'churches' => ['church_id', 'churches.id'],
         ],
     ];
 

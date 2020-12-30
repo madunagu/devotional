@@ -23,9 +23,7 @@ class VideoPost extends Model
             'video_posts.full_text' => 2,
         ],
         'joins' => [
-            'addresses' => ['address_id', 'addresses.id'],
-            'profile_media' => ['profile_media_id', 'profile_media.id'],
-            'churches' => ['church_id', 'churches.id'],
+           
         ],
     ];
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-
+use Spatie\Geocoder;
 use App\Address;
 
 class AddressController extends Controller
@@ -71,7 +71,7 @@ class AddressController extends Controller
         }
         $id = $request->route('id');
 
-// TODO: find the neccessity of checking the user id
+        // TODO: find the neccessity of checking the user id
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;
         $result = Address::find($id);
@@ -90,8 +90,19 @@ class AddressController extends Controller
 
     public function find_address_geolocation(Address $address)
     {
-        $url = 'https://getgooglegeourl.com';
-        //TODO: find all geolocations for this address
+        // $client = new \GuzzleHttp\Client();
+
+        // $geocoder = new Geocoder($client);
+
+        // $geocoder->setApiKey(config('geocoder.key'));
+
+        // $geocoder->setCountry(config('geocoder.country', 'US'));
+
+        // $res = $geocoder->getCoordinatesForAddress($address->toString());
+        // $address->lattitude = $res->lat;
+        // $address->longitude = $res->lng;
+
+        // return [$res->lat, $res->lng];
     }
 
     public function get(Request $request)

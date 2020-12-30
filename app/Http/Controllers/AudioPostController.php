@@ -15,6 +15,7 @@ use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 use App\AudioPost;
 use App\Traits\Interactable;
 use App\Http\Resources\AudioPostCollection;
+use wapmorgan\Mp3Info\Mp3Info;
 
 class AudioPostController extends Controller
 {
@@ -62,8 +63,9 @@ class AudioPostController extends Controller
 
     public function getTrackDetails(AudioPost $audio): AudioPost
     {
-        //TODO:here use libmp3 to get track details and update it
-        //then return the object back
+        $audioInfo = new Mp3Info('./audio.mp3');
+        $audio->length = $audioInfo->duration;
+        $audio->size = $audioInfo->audioSize;
         return $audio;
     }
 
@@ -143,7 +145,7 @@ class AudioPostController extends Controller
         $id = (int)$request->route('id');
         $userId = Auth::user()->id;
         if ($audio = AudioPost::withCount('comments')
-            ->with(['comments','author','user','churches','addresses'])
+            ->with(['comments', 'author', 'user', 'churches', 'addresses'])
             ->withCount([
                 'likes',
                 'likes as liked' => function (Builder $query) use ($userId) {
@@ -181,7 +183,7 @@ class AudioPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioPost::with('author','user','profileMedia');
+        $audia = AudioPost::with('author', 'user', 'profileMedia');
         if ($query) {
             $audia = $audia->search($query);
         }

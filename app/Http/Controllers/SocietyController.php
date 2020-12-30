@@ -98,7 +98,7 @@ class SocietyController extends Controller
         }
 
         $query = $request['q'];
-        $societies = Society::where('societies.id','>','0')->with('church')->with('profileMedia');
+        $societies = Society::with('churches')->with('profileMedia');
         if($query){
             $societies = $societies->search($query);
         }

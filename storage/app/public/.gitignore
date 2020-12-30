@@ -1,2 +1,4 @@
 *
+!video/
+!audio/
 !.gitignore
