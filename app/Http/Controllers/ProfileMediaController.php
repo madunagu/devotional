@@ -10,8 +10,6 @@ use App\ProfileMedia;
 
 class ProfileMediaController extends Controller
 {
-    public $shouldTransrcibe = false;
-
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [

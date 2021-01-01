@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHierarchyablesTable extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateHierarchyablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('hierarchyables', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('hierarchy_id');
-            $table->integer('hierarchyable_id');
-            $table->string('hierarchyable_type');
+            $table->string('tag');            
+            $table->timestamps();
         });
     }
 
@@ -28,6 +27,6 @@ class CreateHierarchyablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hierarchyables');
+        Schema::dropIfExists('tags');
     }
 }

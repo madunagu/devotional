@@ -25,11 +25,14 @@ class Post extends Model
         'object_meta_id',
     ];
 
-    public function profileMedia()
+    public function images()
     {
-        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+        return $this->morphMany('App\Image', 'imageable');
     }
-
+    public function tags()
+    {
+        return $this->morphToMany('App\Tag','taggable');
+    }
     public function addresses()
     {
         return $this->morphToMany('App\Address', 'addressable', 'addressables');

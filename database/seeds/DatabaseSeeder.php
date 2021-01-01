@@ -13,8 +13,10 @@ class DatabaseSeeder extends Seeder
     {
       $this->call(UserSeeder::class);
       $this->call(AddressSeeder::class);
+      $this->call(TagSeeder::class);
       $this->call(CommentSeeder::class);
       $this->call(ChurchSeeder::class);
+      $this->call(ProfileMediaSeeder::class);
       $this->call(EventSeeder::class);
       $this->call(PostSeeder::class);
       $this->call(VideoPostSeeder::class);
