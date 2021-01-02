@@ -23,7 +23,7 @@ class FeedSeeder extends Seeder
                 $inserts[] = [
                     'parentable_type' => $type,
                     'postable_type' => 'user',
-                    'postable_id' => 2,
+                    'postable_id' => $i,
                     'parentable_id' => $i,
                 ];
             }

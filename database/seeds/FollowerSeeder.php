@@ -12,6 +12,7 @@ class FollowerSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('user_followers')->truncate();
         $inserts = [];
         for($i = 0; $i<=10; $i++) {
             $inserts[] = ['user_id' => rand(1, 10), 'follower_id' => 1];

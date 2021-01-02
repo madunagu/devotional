@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Tag;
 
 class TagSeeder extends Seeder
 {
@@ -11,6 +12,8 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Tag::truncate();
+        $tags = [['tag'=>'chants'], ['tag'=>'spirit'], ['tag'=>'acoustic'], ['tag'=>'message'], ['tag'=>'prayer'], ['tag'=>'prophecy']];
+        Tag::insert($tags);
     }
 }
