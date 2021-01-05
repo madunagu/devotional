@@ -63,9 +63,11 @@ class AudioPostController extends Controller
 
     public function getTrackDetails(AudioPost $audio): AudioPost
     {
-        $audioInfo = new Mp3Info('./audio.mp3');
-        $audio->length = $audioInfo->duration;
-        $audio->size = $audioInfo->audioSize;
+        if (!empty($request['audio'])) {
+            $audioInfo = new Mp3Info($request['audio']);
+            $audio->length = $audioInfo->duration;
+            $audio->size = $audioInfo->audioSize;
+        }
         return $audio;
     }
 
@@ -183,7 +185,7 @@ class AudioPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioPost::with('author', 'user', 'profileMedia');
+        $audia = AudioPost::with('author', 'user');
         if ($query) {
             $audia = $audia->search($query);
         }
@@ -192,6 +194,29 @@ class AudioPostController extends Controller
         $audia = $audia->paginate($length);
         $data = new AudioPostCollection($audia);
         return response()->json($data);
+    }
+
+    public function related(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'integer|required|exists:audio_posts,id',
+            'name' => 'string|required|max:255',
+            'src_url' => 'string|required|max:255',
+            'full_text' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
+            'size' => 'nullable|integer',
+            'length' => 'nullable|integer',
+            'language' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+        //TODO: here use search plugin to list advanced related
+        // $audia = AudioPost::where('name','like',$audio->name)
+        // ->with('author')
+        // ->where('')
+        // ->whereNot('audio_posts.id',$audio->id);
     }
 
 

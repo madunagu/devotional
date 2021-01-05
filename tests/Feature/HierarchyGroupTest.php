@@ -36,6 +36,7 @@ class HierarchyGroupTest extends CrudTest
      *
      * @var array
      */
+    
     protected $store = [
 
     ];

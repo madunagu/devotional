@@ -22,25 +22,26 @@ class FeedController extends Controller
         }
         $user = Auth::user();
         $following = $user->following()->pluck('user_id');
-        //TODO: make official relationship after updating laravel
-        // with([
-        //     'parentable' => function (MorphTo $morphTo) {
-        //         $morphTo->morphWithCount([
-        //             AudioPost::class => ['comments', 'likes', 'views'],
-        //             VideoPost::class => ['comments', 'likes', 'views'],
-        //             Post::class => ['comments', 'likes', 'views'],
-        //             Event::class => ['comments', 'attendees', 'views'],
-        //         ]);
 
-        //         $morphTo->morphWith([
-        //             AudioPost::class => [],
-        //             Post::class => [],
-        //             Photo::class => [],
-        //         ]);
-        //     }
-        // ]);
+        $feeds = Feed::with([
+            'parentable' => function (MorphTo $morphTo) {
+                $morphTo->morphWithCount([
+                    AudioPost::class => ['comments', 'likes', 'views'],
+                    VideoPost::class => ['comments', 'likes', 'views'],
+                    Post::class => ['comments', 'likes', 'views'],
+                    Event::class => ['comments', 'attendees', 'views'],
+                ]);
 
-        $feeds = Feed::with('parentable')->whereIn('postable_id', $following)->orderBy('created_at', 'desc');
+                $morphTo->morphWith([
+                    AudioPost::class => [],
+                    Post::class => [],
+                    Photo::class => [],
+                ]);
+            }
+        ])
+        
+        ->whereIn('postable_id', $following)
+        ->orderBy('created_at', 'desc');
         if (!empty($type)) {
             $feeds = $feeds->where('parentable_type', $type);
         }

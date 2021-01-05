@@ -26,9 +26,7 @@ class Event extends Model
          */
         'columns' => [
             'events.name' => 10,
-            'churches.name' => 5,
-            'churches.slogan' => 2,
-            'churches.description' => 1,
+            'events.description' => 5,
         ],
         'joins' => [
          

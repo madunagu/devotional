@@ -35,7 +35,7 @@ class EventController extends Controller
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
         $result = Event::create($data);
-        $saved = $this->saveRelated($data,$result);
+        $saved = $this->saveRelated($data, $result);
         //create event emmiter or reminder or notifications for those who may be interested
 
         if ($result) {
@@ -80,7 +80,7 @@ class EventController extends Controller
         $id = (int) $request->route('id');
         $userId = Auth::user()->id;
         if ($event = Event::withCount('comments')
-            ->with(['comments', 'user', 'churches', 'addresses', 'attendees'])
+            ->with(['comments', 'user', 'churches', 'addresses'])
             ->with(['attendees' => function ($query) {
                 $query->limit(7);
             }])
@@ -116,8 +116,16 @@ class EventController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
+        $userId = Auth::id();
         $query = $request['q'];
-        $events = Event::with('user')->with('profileMedia'); //TODO: add participants to the search using heirarchies
+        $events = Event::with('user')->with(['attendees' => function ($query) {
+            $query->limit(7);
+        }])->withCount([
+            'attendees',
+            'attendees as attending' => function (Builder $query) use ($userId) {
+                $query->where('user_id', $userId);
+            },
+        ])->with('profileMedia'); //TODO: add participants to the search using heirarchies
         if (!empty($query)) {
             $events = $events->search($query);
         }

@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');  //Add api_token field
             $table->string('api_token', 60)->unique()->nullable();
+            $table->string('avatar')->nullable();
             $table->string('email')->unique()->nullable();
             $table->dateTime('assigned_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();

@@ -7,31 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'name',
-        'src_url',
-        'full_text',
-        'description',
-        'author_id',
-        'uploader_id',
-        'church_id',
-        'size',
-        'length',
-        'profile_media_id',
-        'language',
-        'address_id',
-        'view_group_id',
-        'comment_group_id',
-        'like_group_id',
-        'object_meta_id',
+        'title',
+        'body',
+        'user_id',
     ];
 
     public function images()
     {
         return $this->morphMany('App\Image', 'imageable');
     }
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
     public function tags()
     {
-        return $this->morphToMany('App\Tag','taggable');
+        return $this->morphToMany('App\Tag', 'taggable');
     }
     public function addresses()
     {
@@ -46,6 +37,10 @@ class Post extends Model
     public function likes()
     {
         return $this->morphMany('App\Like', 'likeable');
+    }
+    public function views()
+    {
+        return $this->morphMany('App\View', 'viewable');
     }
 
     public function churches()

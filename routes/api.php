@@ -102,7 +102,13 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/comments/{id}', 'CommentController@delete');
     Route::post('/comments/{id}', 'CommentController@like');
     
-
+    Route::get('/posts', 'PostController@list');
+    Route::post('/posts', 'PostController@create');
+    Route::get('/posts/{id}', 'PostController@get');
+    Route::put('/posts/{id}', 'PostController@update');
+    Route::delete('/posts/{id}', 'PostController@delete');
+    Route::post('/posts/{id}', 'PostController@like');
+    
 
     Route::get('/feed', 'FeedController@load');
 });
