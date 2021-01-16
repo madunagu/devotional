@@ -24,8 +24,7 @@ class AudioPost extends Model
             'audio_posts.description' => 5,
             'audio_posts.full_text' => 2,
         ],
-        'joins' => [
-        ],
+        'joins' => [],
     ];
 
     protected $fillable = [
@@ -38,7 +37,7 @@ class AudioPost extends Model
         'size',
         'length',
         'language',
-   
+
     ];
 
     public function images()
@@ -58,13 +57,14 @@ class AudioPost extends Model
 
     public function addresses()
     {
-        return $this->morphToMany('App\Address','addressable','addressables');
+        return $this->morphToMany('App\Address', 'addressable', 'addressables');
     }
 
     public function tags()
     {
-        return $this->morphToMany('App\Tag','taggable');
+        return $this->morphToMany('App\Tag', 'taggable');
     }
+
     public function comments()
     {
         return $this->morphMany('App\Comment', 'commentable');
@@ -72,14 +72,14 @@ class AudioPost extends Model
 
     public function infoCards()
     {
-        return $this->morphMany(InfoCard::class, 'info_cardable');
+        return $this->morphMany('App/InfoCard', 'info_cardable');
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class, 'likeable');
+        return $this->morphMany('App\Like', 'likeable');
     }
-    
+
     public function views()
     {
         return $this->morphMany('App\View', 'viewable');

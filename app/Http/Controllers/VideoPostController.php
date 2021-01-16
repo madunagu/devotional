@@ -44,17 +44,17 @@ class VideoPostController extends Controller
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
         $video = VideoPost::create($data);
-        
+
         $interacted = $this->saveRelated($data, $video);
         //obtain length,size and details of audio
         $result = $this->getTrackDetails($video);
-        $result= $this->getTrackFullText($result);
+        $result = $this->getTrackFullText($result);
 
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 
@@ -74,10 +74,10 @@ class VideoPostController extends Controller
 
             # The audio file's encoding, sample rate and language
             $config = new RecognitionConfig([
-            'encoding' => AudioEncoding::LINEAR16,
-            'sample_rate_hertz' => 32000,
-            'language_code' => 'en-US'
-        ]);
+                'encoding' => AudioEncoding::LINEAR16,
+                'sample_rate_hertz' => 32000,
+                'language_code' => 'en-US'
+            ]);
 
             # Instantiates a client
             $client = new SpeechClient();
@@ -92,7 +92,7 @@ class VideoPostController extends Controller
             }
             $client->close();
             //change audio to text
-        //save it then return object
+            //save it then return object
         }
         return $audio;
     }
@@ -124,14 +124,14 @@ class VideoPostController extends Controller
         $result = VideoPost::find($id);
         //update result
         $result = $this->getTrackDetails($result);
-        $result= $this->getTrackFullText($result);
+        $result = $this->getTrackFullText($result);
         $result = $result->update($data);
 
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 
@@ -139,20 +139,20 @@ class VideoPostController extends Controller
     {
         $id = (int)$request->route('id');
         $userId = Auth::user()->id;
-        if ($audio = VideoPost::withCount('comments')
-            ->with(['comments','author','user','churches','addresses'])
+        if ($audio = VideoPost::with(['comments','images', 'author', 'user', 'churches', 'addresses'])
             ->withCount([
+                'comments',
                 'likes',
                 'likes as liked' => function (Builder $query) use ($userId) {
                     $query->where('user_id', $userId);
                 },
-            ])->withCount([
                 'views',
                 'views as viewed' => function (Builder $query) use ($userId) {
                     $query->where('user_id', $userId);
                 },
             ])
-            ->find($id)) {
+            ->find($id)
+        ) {
             return response()->json([
                 'data' => $audio
             ], 200);
@@ -173,7 +173,7 @@ class VideoPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = VideoPost::with('churches','author','user');
+        $audia = VideoPost::with('churches', 'author', 'user');
         if ($query) {
             $audia = $audia->search($query);
         }

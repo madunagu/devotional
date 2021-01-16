@@ -18,8 +18,8 @@ class Event extends Model
      */
     protected $searchable = [
         /**
-         * Columns and their priority in search results.
-         * Columns with higher values are more important.
+         ** Columns and their priority in search results.
+         * Columns with higher values are more portant.
          * Columns with equal values have equal importance.
          *
          * @var array
@@ -28,21 +28,26 @@ class Event extends Model
             'events.name' => 10,
             'events.description' => 5,
         ],
-        'joins' => [
-         
-        ],
+        'joins' => [],
     ];
 
     protected $fillable = [
-        'name', 'starting_at', 'ending_at','description', 'user_id',
+        'name', 'starting_at', 'ending_at', 'description', 'user_id',
     ];
 
     public function addresses()
     {
         return $this->morphToMany('App\Address', 'addressable', 'addressables');
     }
+    // abcdef ghijklmnopqrstuvwxyz 1234567890-=```````---
 
-    public function attendees(){
+    public function poster()
+    {
+        return $this->morphTo('poster');
+    }
+
+    public function attendees()
+    {
         return $this->belongsToMany('App\User', 'event_user');
     }
 
@@ -70,18 +75,18 @@ class Event extends Model
     {
         return $this->belongsTo('App\User');
     }
-    
+
     public function churches()
     {
-        return $this->morphToMany('App\Church', 'churchable','churchables');
-    }
-    
-    public function hierarchyGroups()
-    {
-        return $this->morphToMany('App\HierarchyGroup', 'hierarchyable','hierarchyables');
+        return $this->morphToMany('App\Church', 'churchable', 'churchables');
     }
 
-        public function views()
+    public function hierarchyGroups()
+    {
+        return $this->morphToMany('App\HierarchyGroup', 'hierarchyable', 'hierarchyables');
+    }
+
+    public function views()
     {
         return $this->morphMany('App\View', 'viewable');
     }

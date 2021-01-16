@@ -1,6 +1,7 @@
 <?php
 
 use App\Image;
+use App\Universal\Constants;
 use Faker\Generator as Faker;
 
 $factory->define(Image::class, function (Faker $faker) {
@@ -12,7 +13,7 @@ $factory->define(Image::class, function (Faker $faker) {
         'medium_url' => $faker->imageUrl('200,200'),
         'large_url' => $faker->imageUrl('500,500'),
         'imageable_id' => random_int(1, 10),
-        'imageable_type' => $types[rand(0, count($types))],
+        'imageable_type' => Constants::$_[rand(0, 5)],
         'user_id' => 1
     ];
 });

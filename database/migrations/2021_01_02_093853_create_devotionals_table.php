@@ -15,6 +15,14 @@ class CreateDevotionalsTable extends Migration
     {
         Schema::create('devotionals', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('title');
+            $table->text('opening_prayer')->nullable();
+            $table->text('closing_prayer')->nullable();
+            $table->text('body')->nullable();
+            $table->string('memory_verse')->nullable();
+            $table->dateTime('day');
+            $table->integer('poster_id')->nullable();
+            $table->string('poster_type')->nullable();
             $table->timestamps();
         });
     }

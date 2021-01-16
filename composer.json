@@ -9,15 +9,16 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
+        "facade/ignition": "^2.0",
         "fideloper/proxy": "^4.0",
         "google/cloud-speech": "^0.21.0",
         "laravel/framework": "^7.0",
         "laravel/passport": "^9.3.2",
         "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.0",
         "nicolaslopezj/searchable": "1.*",
         "qcod/laravel-imageup": "^1.0",
-        "wapmorgan/mp3info": "^0.0.5",
-        "facade/ignition": "^2.0"
+        "wapmorgan/mp3info": "^0.0.5"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

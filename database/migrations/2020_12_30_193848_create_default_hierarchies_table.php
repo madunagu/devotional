@@ -15,6 +15,11 @@ class CreateDefaultHierarchiesTable extends Migration
     {
         Schema::create('default_hierarchies', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('hierarchy_group_id');
+            $table->string('position_name');
+            $table->string('position_slang');
+            $table->string('rank');
+            $table->string('group_id');
             $table->timestamps();
         });
     }

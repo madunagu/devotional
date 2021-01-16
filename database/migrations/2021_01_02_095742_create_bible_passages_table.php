@@ -15,6 +15,12 @@ class CreateBiblePassagesTable extends Migration
     {
         Schema::create('bible_passages', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('chapter');
+            $table->integer('verse');
+            $table->string('book');
+            $table->string('version')->nullable();
+            $table->integer('verses')->nullable();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

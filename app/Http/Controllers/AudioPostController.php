@@ -146,14 +146,13 @@ class AudioPostController extends Controller
     {
         $id = (int)$request->route('id');
         $userId = Auth::user()->id;
-        if ($audio = AudioPost::withCount('comments')
-            ->with(['comments', 'author', 'user', 'churches', 'addresses'])
+        if ($audio = AudioPost::with(['comments', 'images', 'author', 'user', 'churches', 'addresses'])
             ->withCount([
+                'comments',
                 'likes',
                 'likes as liked' => function (Builder $query) use ($userId) {
                     $query->where('user_id', $userId);
                 },
-            ])->withCount([
                 'views',
                 'views as viewed' => function (Builder $query) use ($userId) {
                     $query->where('user_id', $userId);
@@ -212,11 +211,16 @@ class AudioPostController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
+        $audio = AudioPost::find($request['id']);
         //TODO: here use search plugin to list advanced related
-        // $audia = AudioPost::where('name','like',$audio->name)
-        // ->with('author')
-        // ->where('')
-        // ->whereNot('audio_posts.id',$audio->id);
+        $names = explode(' ', $audio->name);
+        $audia = AudioPost::where('name', 'like', $audio->name);
+        foreach ($names as $key => $name) {
+            $audia->orWhere('name', 'like', "%$name%");
+            $audia->orWhere('description', 'like', "%$name%");
+        }
+        $audia->with('author')
+            ->whereNot('audio_posts.id', $audio->id);
     }
 
 

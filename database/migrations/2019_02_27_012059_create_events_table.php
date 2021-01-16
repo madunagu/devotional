@@ -20,6 +20,8 @@ class CreateEventsTable extends Migration
             $table->dateTime('starting_at')->nullable();
             $table->dateTime('ending_at')->nullable();
             $table->integer('user_id');
+            $table->integer('poster_id')->nullable();
+            $table->string('poster_type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
