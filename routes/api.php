@@ -58,6 +58,13 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/events/{id}', 'EventController@delete');
     Route::post('/events/{id}', 'EventController@attend');
 
+    Route::get('/devotionals', 'DevotionalController@list');
+    Route::post('/devotionals', 'DevotionalController@create');
+    Route::get('/devotionals/{id}', 'DevotionalController@get');
+    Route::put('/devotionals/{id}', 'DevotionalController@update');
+    Route::delete('/devotionals/{id}', 'DevotionalController@delete');
+    Route::post('/devotionals/{id}', 'DevotionalController@devote');
+
 
     Route::get('/hierarchies', 'HierarchyController@list');
     Route::post('/hierarchies', 'HierarchyController@create');

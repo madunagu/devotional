@@ -197,20 +197,7 @@ class AudioPostController extends Controller
 
     public function related(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'integer|required|exists:audio_posts,id',
-            'name' => 'string|required|max:255',
-            'src_url' => 'string|required|max:255',
-            'full_text' => 'nullable|string',
-            'description' => 'nullable|string|max:255',
-            'size' => 'nullable|integer',
-            'length' => 'nullable|integer',
-            'language' => 'nullable|string',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
-        }
         $audio = AudioPost::find($request['id']);
         //TODO: here use search plugin to list advanced related
         $names = explode(' ', $audio->name);
@@ -219,8 +206,10 @@ class AudioPostController extends Controller
             $audia->orWhere('name', 'like', "%$name%");
             $audia->orWhere('description', 'like', "%$name%");
         }
-        $audia->with('author')
-            ->whereNot('audio_posts.id', $audio->id);
+        $data = $audia->with('author')
+            ->whereNot('audio_posts.id', $audio->id)->paginate();
+
+            return response()->json($data);
     }
 
 

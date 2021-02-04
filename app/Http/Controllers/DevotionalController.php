@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Devotional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Validator;
 
-use App\Event;
 use App\Http\Resources\EventCollection;
 use App\Traits\Interactable;
-use Illuminate\Support\Facades\DB;
 
-class EventController extends Controller
+
+class DevotionalController extends Controller
 {
     use Interactable;
 
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'string|required|max:255',
-            'church_id' => 'nullable|integer|exists:churches,id',
-            'starting_at' => 'nullable|date',
-            'ending_at' => 'nullable|date',
-            'address_id' => 'nullable|integer|exists:addresses,id',
-            'profile_media_id' => 'nullable|integer|exists:profile_media,id',
-            'hierarchy_group_id' => 'nullable|integer|exists:hierarchy_groups,id',
+            'title' => 'string|required|max:255',
+            'opening_prayer' => 'string',
+            'closing_prayer' => 'string',
+            'body' => 'string|required',
+            'memory_verse' => 'string|required|max:255',
+            'day' => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
@@ -33,8 +32,9 @@ class EventController extends Controller
         }
 
         $data = collect($request->all())->toArray();
-        $data['uploader_id'] = Auth::user()->id;
-        $result = Event::create($data);
+        $data['poster_id'] = Auth::user()->id;
+        $data['poster_type'] = 'user';
+        $result = Devotional::create($data);
         $saved = $this->saveRelated($data, $result);
         //create event emmiter or reminder or notifications for those who may be interested
 
@@ -44,27 +44,26 @@ class EventController extends Controller
             return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
-    
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'integer|required|exists:events,id',
-            'name' => 'string|required|max:255',
-            'church_id' => 'nullable|integer|exists:churches,id',
-            'starting_at' => 'nullable|date',
-            'ending_at' => 'nullable|date',
-            'address_id' => 'nullable|integer|exists:addresses,id',
-            'profile_media_id' => 'nullable|integer|exists:profile_media,id',
-            'hierarchy_group_id' => 'nullable|integer|exists:hierarchy_groups,id',
+            'id' => 'integer|required|exists:devotionals,id',
+            'title' => 'string|required|max:255',
+            'opening_prayer' => 'string',
+            'closing_prayer' => 'string',
+            'body' => 'string|required',
+            'memory_verse' => 'string|required|max:255',
+            'day' => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
         $data = collect($request->all())->toArray();
-        $data['user_id'] = Auth::user()->id;
+        $data['poster_id'] = Auth::user()->id;
+        $data['poster_type'] = 'user';
         $id = $request->route('id');
-        $result = Event::find($id);
+        $result = Devotional::find($id);
         //update result
         $result = $result->update($data);
 
@@ -80,14 +79,14 @@ class EventController extends Controller
     {
         $id = (int) $request->route('id');
         $userId = Auth::user()->id;
-        if ($event = Event::withCount('comments')
-            ->with(['comments', 'user', 'churches', 'addresses'])
-            ->with(['attendees' => function ($query) {
+        if ($event = Devotional::withCount('comments')
+            ->with(['comments', 'poster', 'churches'])
+            ->with(['devotees' => function ($query) {
                 $query->limit(7);
             }])
             ->withCount([
-                'attendees',
-                'attendees as attending' => function (Builder $query) use ($userId) {
+                'devotees',
+                'devotees as devoted' => function (Builder $query) use ($userId) {
                     $query->where('user_id', $userId);
                 },
             ])
@@ -119,11 +118,11 @@ class EventController extends Controller
 
         $userId = Auth::id();
         $query = $request['q'];
-        $events = Event::with('user')->with(['attendees' => function ($query) {
+        $events = Devotional::with('poster')->with(['devotees' => function ($query) {
             $query->limit(7);
         }])->withCount([
-            'attendees',
-            'attendees as attending' => function (Builder $query) use ($userId) {
+            'devotees',
+            'devotees as devoted' => function (Builder $query) use ($userId) {
                 $query->where('user_id', $userId);
             },
         ])->with('profileMedia'); //TODO: add participants to the search using heirarchies
@@ -133,22 +132,21 @@ class EventController extends Controller
         //here insert search parameters and stuff
         $length = (int) (empty($request['perPage']) ? 15 : $request['perPage']);
         $events = $events->paginate($length);
-        $data = new EventCollection($events);
-        return response()->json($data);
+        // $data = new EventCollection($events);
+        return response()->json($events);
     }
 
-    // this is a bool function
-    public function attend(Request $request)
+    public function devote(Request $request)
     {
         $id = $request->route('id');
         $tog = $request['value'];
         $userId = Auth::id();
-        $event = Event::find((int)$id);
+        $event = Devotional::find((int)$id);
         if ($tog) {
-            $event->attendees()->attach($userId);
+            $event->devotees()->attach($userId);
             return response()->json(['data' => true]);
         }
-        $event->attendees()->detach($userId);
+        $event->devotees()->detach($userId);
         return response()->json(['data' => false]);
     }
 
@@ -156,8 +154,8 @@ class EventController extends Controller
     public function delete(Request $request)
     {
         $id = (int) $request->route('id');
-        if ($event = Event::find($id)) {
-            $event->delete();
+        if ($devotional = Devotional::find($id)) {
+            $devotional->delete();
             return response()->json([
                 'data' => true
             ], 200);

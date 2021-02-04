@@ -65,6 +65,22 @@ class VideoPostController extends Controller
         return $video;
     }
 
+    public function related(Request $request)
+    {
+        $audio = VideoPost::find($request['id']);
+        //TODO: here use search plugin to list advanced related
+        $names = explode(' ', $audio->name);
+        $audia = VideoPost::where('name', 'like', $audio->name);
+        foreach ($names as $key => $name) {
+            $audia->orWhere('name', 'like', "%$name%");
+            $audia->orWhere('description', 'like', "%$name%");
+        }
+        $data = $audia->with('author')
+            ->whereNot('audio_posts.id', $audio->id)->paginate();
+        return response()->json($data);
+    }
+
+
     public function getTrackFullText(VideoPost $audio): VideoPost
     {
         if ($this->shouldTransrcibe) {
@@ -139,7 +155,7 @@ class VideoPostController extends Controller
     {
         $id = (int)$request->route('id');
         $userId = Auth::user()->id;
-        if ($audio = VideoPost::with(['comments','images', 'author', 'user', 'churches', 'addresses'])
+        if ($audio = VideoPost::with(['comments', 'images', 'author', 'user', 'churches', 'addresses'])
             ->withCount([
                 'comments',
                 'likes',

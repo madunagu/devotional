@@ -13,6 +13,16 @@ class Devotional extends Model
         return $this->morphMany('App\Image', 'imageable');
     }
 
+    public function devotees()
+    {
+        return $this->belongsToMany('App\User', 'devotional_user');
+    }
+
+    public function profileMedia()
+    {
+        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+    }
+
     public function comments()
     {
         return $this->morphMany('App\Comment', 'commentable');
@@ -31,6 +41,11 @@ class Devotional extends Model
     public function views()
     {
         return $this->morphMany('App\View', 'viewable');
+    }
+
+    public function churches()
+    {
+        return $this->morphToMany('App\Church', 'churchable', 'churchables');
     }
 
     public function user()

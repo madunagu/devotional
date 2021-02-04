@@ -39,7 +39,6 @@ class Event extends Model
     {
         return $this->morphToMany('App\Address', 'addressable', 'addressables');
     }
-    // abcdef ghijklmnopqrstuvwxyz 1234567890-=```````---
 
     public function poster()
     {
@@ -53,12 +52,12 @@ class Event extends Model
 
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany('App\Comment', 'commentable');
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class, 'likeable');
+        return $this->morphMany('App\Like', 'likeable');
     }
 
     public function profileMedia()
