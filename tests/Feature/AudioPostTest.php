@@ -39,4 +39,7 @@ class AudioPostTest extends CrudTest
     protected $store = [
 
     ];
+
+    protected $like = true;
+    protected $search = true;
 }

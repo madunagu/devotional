@@ -104,18 +104,45 @@ abstract class CrudTest extends TestCase
 
     public function testSearch()
     {
-        $search = 'por';
-        $response = $this->json('GET', "api/{$this->endpoint}", ['q' => $search]);
         if (isset($this->search)) {
-            $response
-                ->assertStatus(200)
-                ->assertJson([
-                    'data' => []
-                ]);
-        } else {
+            $search = 'por';
+            $response = $this->json('GET', "api/{$this->endpoint}", ['q' => $search]);
+            if (isset($this->search)) {
+                $response
+                    ->assertStatus(200)
+                    ->assertJson([
+                        'data' => []
+                    ]);
+            } else {
+                $response
+                    ->assertStatus(200);
+            }
+        }
+    }
 
-            $response
-                ->assertStatus(200);
+    /**
+     * GET /endpoint/<id>
+     * Should return 201 with data array
+     *
+     * @return void
+     */
+    public function testLike()
+    {
+        if (isset($this->like)) {
+            // Create a test shop with filled out fields
+            $activity = $this->createPost();
+            // Check the API for the new entry
+            $response = $this->json('POST', "api/{$this->endpoint}/{$activity->id}", ['value' => true]);
+            if (isset($this->search)) {
+                $response
+                    ->assertStatus(200)
+                    ->assertJson([
+                        'data' => true
+                    ]);
+            } else {
+                $response
+                    ->assertStatus(200);
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ class CreateDevotionalsTable extends Migration
             $table->dateTime('day');
             $table->integer('poster_id')->nullable();
             $table->string('poster_type')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

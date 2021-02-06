@@ -39,4 +39,7 @@ class VideoPostTest extends CrudTest
     protected $store = [
 
     ];
+    
+    protected $like = true;
+    protected $search = true;
 }

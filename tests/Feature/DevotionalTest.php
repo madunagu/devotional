@@ -2,26 +2,23 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Event;
+use App\Devotional;
 
-class EventTest extends CrudTest
+class DevotionalTest extends CrudTest
 {
     /**
      * The model to use when creating dummy data
      *
      * @var class
      */
-    protected $model = Event::class;
+    protected $model = Devotional::class;
     /**
      * The endpoint to query in the API
      * e.g = /api/v1/<endpoint>
      *
      * @var string
      */
-    protected $endpoint = 'events';
+    protected $endpoint = 'devotionals';
     /**
      * Any additional "states" to add to factory
      *
@@ -36,10 +33,7 @@ class EventTest extends CrudTest
      *
      * @var array
      */
-    protected $store = [
-
-    ];
-    
+    protected $store = [];
     protected $like = true;
     protected $search = true;
 }

@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
       $this->call(UserSeeder::class);
       $this->call(AddressSeeder::class);
       $this->call(DefaultHierarchySeeder::class);
+      $this->call(DevotionalSeeder::class);
       $this->call(ImageSeeder::class);
       $this->call(BiblePassageSeeder::class);
       $this->call(TagSeeder::class);

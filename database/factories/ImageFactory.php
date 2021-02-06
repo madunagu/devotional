@@ -5,8 +5,6 @@ use App\Universal\Constants;
 use Faker\Generator as Faker;
 
 $factory->define(Image::class, function (Faker $faker) {
-    $types = ['audio', 'video', 'post'];
-
     return [
         'avatar_url' => $faker->imageUrl(50, 50),
         'small_url' => $faker->imageUrl('100,100'),

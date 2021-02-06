@@ -38,7 +38,7 @@ class CommentTest extends CrudTest
      * @var array
      */
 
-    protected $search = false;
+    protected $like = true;
     protected $store = [
 
     ];

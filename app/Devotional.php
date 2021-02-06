@@ -3,9 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Devotional extends Model
 {
+    use SearchableTrait, SoftDeletes;
+
     protected $fillable = ['title', 'opening_prayer', 'closing_prayer', 'body', 'memory_verse', 'day'];
 
     public function images()

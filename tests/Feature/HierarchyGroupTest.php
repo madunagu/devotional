@@ -40,4 +40,5 @@ class HierarchyGroupTest extends CrudTest
     protected $store = [
 
     ];
+    protected $search = true;
 }
