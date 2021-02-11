@@ -10,7 +10,7 @@ $factory->define(Devotional::class, function (Faker $faker) {
     $posterTypes = ['user', 'church', 'society',];
 
     return [
-        'title' => $faker->sentence,
+        'title' => $faker->name,
         'opening_prayer' => $faker->paragraph,
         'closing_prayer' => $faker->paragraph,
         'body' => $faker->text,

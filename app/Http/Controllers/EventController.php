@@ -33,7 +33,7 @@ class EventController extends Controller
         }
 
         $data = collect($request->all())->toArray();
-        $data['uploader_id'] = Auth::user()->id;
+        $data['user_id'] = Auth::user()->id;
         $result = Event::create($data);
         $saved = $this->saveRelated($data, $result);
         //create event emmiter or reminder or notifications for those who may be interested

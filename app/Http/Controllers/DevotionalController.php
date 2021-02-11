@@ -20,11 +20,11 @@ class DevotionalController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'string|required|max:255',
-            'opening_prayer' => 'string',
-            'closing_prayer' => 'string',
+            'opening_prayer' => 'string|nullable',
+            'closing_prayer' => 'string|nullable',
             'body' => 'string|required',
-            'memory_verse' => 'string|required|max:255',
-            'day' => 'nullable|date',
+            'memory_verse' => 'string|nullable|max:255',
+            'day' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -35,7 +35,7 @@ class DevotionalController extends Controller
         $data['poster_id'] = Auth::user()->id;
         $data['poster_type'] = 'user';
         $result = Devotional::create($data);
-        $saved = $this->saveRelated($data, $result);
+        //$saved = $this->saveRelated($data, $result);
         //create event emmiter or reminder or notifications for those who may be interested
 
         if ($result) {
@@ -44,6 +44,7 @@ class DevotionalController extends Controller
             return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
+    
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
