@@ -37,7 +37,7 @@ class FeedController extends Controller
                     AudioPost::class => ['user'],
                     VideoPost::class => ['user'],
                     Post::class => ['user'],
-                    Event::class => [],
+                    Event::class => ['poster','user'],
                 ]);
             }
         ])
