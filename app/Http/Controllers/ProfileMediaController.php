@@ -12,16 +12,16 @@ class ProfileMediaController extends Controller
 {
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'logo_url' =>  'nullable|string|max:255',
-            'profile_image_url' =>  'nullable|string|max:255',
-            'background_image_url' =>  'nullable|string|max:255',
-            'color_choice' => 'nullable|string|max:255',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'logo_url' =>  'nullable|string|max:255',
+        //     'profile_image_url' =>  'nullable|string|max:255',
+        //     'background_image_url' =>  'nullable|string|max:255',
+        //     'color_choice' => 'nullable|string|max:255',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json($validator->messages(), 422);
+        // }
 
         $data = collect($request->all())->toArray();
         $data['user_id'] = Auth::user()->id;

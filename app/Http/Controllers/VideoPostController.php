@@ -187,9 +187,21 @@ class VideoPostController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
+        $userId = Auth::id();
 
         $query = $request['q'];
-        $audia = VideoPost::with('churches', 'author', 'user');
+        $audia = VideoPost::with(['images', 'author', 'user'])
+            ->withCount([
+                'comments',
+                'likes',
+                'likes as liked' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+                'views',
+                'views as viewed' => function (Builder $query) use ($userId) {
+                    $query->where('user_id', $userId);
+                },
+            ]);
         if ($query) {
             $audia = $audia->search($query);
         }

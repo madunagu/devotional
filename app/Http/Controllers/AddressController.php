@@ -35,12 +35,12 @@ class AddressController extends Controller
         $result = Address::create($data);
         //obtain longitude and latitude if they werent set
         if (!$result->longitude || !$result->latitude) {
-            //queue set latitude and longitude event
-            $coor = $this->find_address_geolocation($result);
+            // queue set latitude and longitude event
+            // $coor = $this->find_address_geolocation($result);
 
-            $result->longitude = $coor[0];
-            $result->latitude = $coor[1];
-            $result->update();
+            // $result->longitude = $coor[0];
+            // $result->latitude = $coor[1];
+            // $result->update();
         }
 
         if ($result) {
@@ -90,19 +90,19 @@ class AddressController extends Controller
 
     public function find_address_geolocation(Address $address)
     {
-        // $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client();
 
-        // $geocoder = new Geocoder($client);
+        $geocoder = new Geocoder($client);
 
-        // $geocoder->setApiKey(config('geocoder.key'));
+        $geocoder->setApiKey(config('geocoder.key'));
 
-        // $geocoder->setCountry(config('geocoder.country', 'US'));
+        $geocoder->setCountry(config('geocoder.country', 'US'));
 
-        // $res = $geocoder->getCoordinatesForAddress($address->toString());
-        // $address->lattitude = $res->lat;
-        // $address->longitude = $res->lng;
+        $res = $geocoder->getCoordinatesForAddress($address->toString());
+        $address->lattitude = $res->lat;
+        $address->longitude = $res->lng;
 
-        // return [$res->lat, $res->lng];
+        return [$res->lat, $res->lng];
     }
 
     public function get(Request $request)

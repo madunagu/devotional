@@ -7,6 +7,7 @@ use App\Event;
 use App\Feed;
 use App\Http\Resources\FeedCollection;
 use App\User;
+use App\VideoPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +34,10 @@ class FeedController extends Controller
                 ]);
 
                 $morphTo->morphWith([
-                    AudioPost::class => [],
-                    Post::class => [],
-                    Photo::class => [],
+                    AudioPost::class => ['user'],
+                    VideoPost::class => ['user'],
+                    Post::class => ['user'],
+                    Event::class => [],
                 ]);
             }
         ])

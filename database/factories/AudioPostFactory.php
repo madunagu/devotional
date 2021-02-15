@@ -12,7 +12,7 @@ $factory->define(AudioPost::class, function (Faker $faker) {
         'full_text' => $faker->paragraph,
         'description' => $faker->sentence,
         'author_id' => 1,
-        'uploader_id' => 1,
+        'uploader_id' => rand(1,20),
         'size' => $faker->numberBetween(0,200000),
         'length' => $faker->numberBetween(0,660),
         'language'=>$faker->languageCode,
