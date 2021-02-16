@@ -28,9 +28,9 @@ class ProfileMediaController extends Controller
         $result = ProfileMedia::create($data);
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => $result], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 500);
         }
     }
 
@@ -44,7 +44,7 @@ class ProfileMediaController extends Controller
             'profile_image_url' =>  'nullable|string|max:255',
             'background_image_url' =>  'nullable|string|max:255',
             'color_choice' => 'nullable|string|max:255',
-            ]);
+        ]);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
@@ -59,9 +59,9 @@ class ProfileMediaController extends Controller
 
 
         if ($result) {
-            return response()->json(['data'=>true], 201);
+            return response()->json(['data' => true], 201);
         } else {
-            return response()->json(['data'=>false,'errors'=>'unknown error occured'], 400);
+            return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
 

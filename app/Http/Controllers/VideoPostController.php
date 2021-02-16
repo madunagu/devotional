@@ -50,7 +50,6 @@ class VideoPostController extends Controller
         $result = $this->getTrackDetails($video);
         $result = $this->getTrackFullText($result);
 
-
         if ($result) {
             return response()->json(['data' => true], 201);
         } else {
