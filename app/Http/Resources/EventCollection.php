@@ -16,13 +16,12 @@ class EventCollection extends ResourceCollection
     {
         return [
             'data' => EventResource::collection($this->collection),
-            'pagination' => [
-                'total' => $this->total(),
-                'count' => $this->count(),
-                'per_page' => $this->perPage(),
-                'current_page' => $this->currentPage(),
-                'total_pages' => $this->lastPage()
-            ],
+            'total' => $this->total(),
+            'count' => $this->count(),
+            'per_page' => $this->perPage(),
+            'current_page' => $this->currentPage(),
+            'total_pages' => $this->lastPage()
+
         ];
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Validator;
 
-use App\Http\Resources\EventCollection;
+use App\Http\Resources\DevotionalCollection;
 use App\Traits\Interactable;
 
 
@@ -44,7 +44,7 @@ class DevotionalController extends Controller
             return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
-    
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -133,8 +133,8 @@ class DevotionalController extends Controller
         //here insert search parameters and stuff
         $length = (int) (empty($request['perPage']) ? 15 : $request['perPage']);
         $events = $events->paginate($length);
-        // $data = new EventCollection($events);
-        return response()->json($events);
+        $data = new DevotionalCollection($events);
+        return response()->json($data);
     }
 
     public function devote(Request $request)
