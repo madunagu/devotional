@@ -17,7 +17,7 @@ class CreateChurchesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('alternate_name')->nullable();
-            $table->string('parent_id')->default(0);
+            $table->integer('parent_id')->default(0);
             $table->integer('user_id');
             $table->integer('leader_id')->nullable();
             $table->string('slogan')->nullable();
