@@ -10,6 +10,7 @@ $factory->define(Event::class, function (Faker $faker) {
         'starting_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'ending_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'user_id' => rand(1, 10),
+        'description' => $faker->paragraph(5, true),
         'poster_type' => $posters[rand(0, 2)],
         'poster_id' => rand(1, 10),
     ];
