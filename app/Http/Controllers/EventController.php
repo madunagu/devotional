@@ -44,7 +44,7 @@ class EventController extends Controller
             return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }
     }
-    
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -81,7 +81,7 @@ class EventController extends Controller
         $id = (int) $request->route('id');
         $userId = Auth::user()->id;
         if ($event = Event::withCount('comments')
-            ->with(['comments', 'user', 'churches', 'addresses'])
+            ->with(['comments', 'user', 'churches', 'addresses', 'poster'])
             ->with(['attendees' => function ($query) {
                 $query->limit(7);
             }])
