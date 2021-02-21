@@ -42,7 +42,7 @@ class AudioPost extends Model
 
     public function images()
     {
-        return $this->morphMany('App\Image', 'imageable');
+        return $this->morphToMany('App\Image', 'imageable', 'imageables');
     }
 
     public function author()

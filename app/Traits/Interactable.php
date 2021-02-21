@@ -37,15 +37,11 @@ trait Interactable
         if (!empty($data['church_id'])) {
             $created->churches()->attach((int)$data['church_id']);
         }
-        if (!empty($data['address_id'])) {
-            $created->addresses()->attach((int)$data['address_id']);
+        if (!empty($data['address_ids'])) {
+            $created->addresses()->attach($data['address_ids']);
         }
-        if (!empty($data['profile_media_id'])) {
-            // $created->profileMedia()->attach((int)$data['profile_media_id']);
-            $media = ProfileMedia::findOrFail(1);
-            $media->profileMediaable()->associate($created);
-            // $created->profileMedia;
-            // $media->save();
+        if (!empty($data['image_ids'])) {
+            $created->images()->attach($data['image_ids']);
         }
 
         return $data;

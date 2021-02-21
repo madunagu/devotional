@@ -60,9 +60,9 @@ class Event extends Model
         return $this->morphMany('App\Like', 'likeable');
     }
 
-    public function profileMedia()
+    public function images()
     {
-        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+        return $this->morphToMany('App\Image', 'imageable', 'imageables');
     }
 
     public function church()

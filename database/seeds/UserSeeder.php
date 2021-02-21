@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         App\User::truncate();
         $user = User::create([
-            'avatar' => 'https://lorempixel.com/50/50/?14300',
+            'avatar' => 'https://randomuser.me/api/portraits/men/1.jpg',
             'name' => 'Ekene Madunagu',
             'email' => 'ekenemadunagu@gmail.com',
             'password' => Hash::make('mercy'),

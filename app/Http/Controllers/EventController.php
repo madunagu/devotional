@@ -36,10 +36,12 @@ class EventController extends Controller
         $data['user_id'] = Auth::user()->id;
         $result = Event::create($data);
         $saved = $this->saveRelated($data, $result);
+        $event = Event::with(['user', 'poster', 'images'])->find($result->id);
         //create event emmiter or reminder or notifications for those who may be interested
 
+
         if ($result) {
-            return response()->json(['data' => true], 201);
+            return response()->json(['data' => $event], 201);
         } else {
             return response()->json(['data' => false, 'errors' => 'unknown error occured'], 400);
         }

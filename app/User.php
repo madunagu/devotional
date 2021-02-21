@@ -75,8 +75,9 @@ class User extends Authenticatable
         return $this->morphMany(InfoCard::class, 'info_cardable');
     }
 
-    public function profileMedia()
+    public function images()
     {
-        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+        return $this->morphToMany('App\Image', 'imageable', 'imageables');
     }
+    
 }

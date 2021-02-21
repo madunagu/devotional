@@ -49,9 +49,9 @@ class Church extends Model
         return $this->morphToMany('App\Address','addressable');
     }
 
-    public function profileMedia()
+    public function images()
     {
-        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+        return $this->morphToMany('App\Image', 'imageable', 'imageables');
     }
 
     public function hierarchyGroup()

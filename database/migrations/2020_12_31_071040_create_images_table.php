@@ -21,8 +21,6 @@ class CreateImagesTable extends Migration
             $table->string('avatar_url');
             $table->string('full_url');
             $table->string('user_id');
-            $table->integer('imageable_id');
-            $table->string('imageable_type');
             $table->timestamps();
         });
     }

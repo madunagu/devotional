@@ -31,9 +31,9 @@ class Society extends Model
         'name', 'parent_id', 'closed', 'user_id', 'description',
     ];
 
-    public function profileMedia()
+    public function images()
     {
-        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
+        return $this->morphToMany('App\Image', 'imageable', 'imageables');
     }
 
      
