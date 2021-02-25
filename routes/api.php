@@ -79,12 +79,6 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/hierarchy-groups/{id}', 'HierarchyGroupController@update');
     Route::delete('/hierarchy-groups/{id}', 'HierarchyGroupController@delete');
 
-    Route::get('/profile-media', 'ProfileMediaController@list');
-    Route::post('/profile-media', 'ProfileMediaController@create');
-    Route::get('/profile-media/{id}', 'ProfileMediaController@get');
-    Route::put('/profile-media/{id}', 'ProfileMediaController@update');
-    Route::delete('/profile-media/{id}', 'ProfileMediaController@delete');
-
     Route::post('/images', 'ImageController@create');
     Route::get('/images/{id}', 'ImageController@get');
     Route::delete('/images/{id}', 'ImageController@delete');

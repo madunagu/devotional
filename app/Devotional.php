@@ -23,10 +23,6 @@ class Devotional extends Model
         return $this->belongsToMany('App\User', 'devotional_user');
     }
 
-    public function profileMedia()
-    {
-        return $this->morphOne('App\ProfileMedia', 'profile_mediable');
-    }
 
     public function comments()
     {

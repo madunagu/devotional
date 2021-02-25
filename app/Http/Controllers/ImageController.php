@@ -16,41 +16,49 @@ class ImageController extends Controller
 
     public function create(Request $request)
     {
+        // $validator =  Validator::make($request->all(), [
+        //     'photos' => 'required',
+        //     'photos.*' => 'mimes:jpg,png,gif'
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return response()->json($validator->messages(), 422);
+        // }
 
         $userId = Auth::user()->id;
         $data = [];
 
-        if ($request->hasfile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $name = time() . '.' . $photo->getClientOriginalExtension();
-                Storage::putFileAs('public/images/full', $photo, $name);
-                $image_resize = ImageManager::make($photo->getRealPath());
+        foreach ($request['photos'] as $photo) {
+            // $name = time() . '.' . $photo->getClientOriginalExtension();
+            $name = time() . '.jpg';
+            Storage::put('public/images/full'. $name, $photo);
+            $image_resize = ImageManager::make($photo);
 
-                $image_resize->resize(500, 500);
-                $image_resize->save('images/replacer');
-                $save = Storage::putFileAs("public/images/large", new File('images/replacer'), $name);
+            $image_resize->resize(500, 500);
+            $image_resize->save('images/replacer');
+            $save = Storage::putFileAs("public/images/large", new File('images/replacer'), $name);
 
-                $image_resize->resize(200, 200);
-                $image_resize->save('images/replacer');
-                $save = Storage::putFileAs("public/images/medium", new File('images/replacer'), $name);
+            $image_resize->resize(200, 200);
+            $image_resize->save('images/replacer');
+            $save = Storage::putFileAs("public/images/medium", new File('images/replacer'), $name);
 
-                $image_resize->resize(100, 100);
-                $image_resize->save('images/replacer');
+            $image_resize->resize(100, 100);
+            $image_resize->save('images/replacer');
 
-                $save = Storage::putFileAs("public/images/small", new File('images/replacer'), $name);
+            $save = Storage::putFileAs("public/images/small", new File('images/replacer'), $name);
 
-                $image = Image::create([
-                    'photo' => $photo,
-                    'full' => 'images/full/' . $name,
-                    'large' => 'images/large/' . $name,
-                    'medium' => 'images/medium/' . $name,
-                    'small' => 'images/small/' . $name,
-                    'user_id' => $userId
-                ]);
+            $image = Image::create([
+                'photo' => $photo,
+                'full' => 'images/full/' . $name,
+                'large' => 'images/large/' . $name,
+                'medium' => 'images/medium/' . $name,
+                'small' => 'images/small/' . $name,
+                'user_id' => $userId
+            ]);
 
-                $data[] = $image;
-            }
+            $data[] = $image;
         }
+
 
 
         if ($data) {

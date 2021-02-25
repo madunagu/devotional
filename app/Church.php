@@ -34,7 +34,6 @@ class Church extends Model
         ],
         // 'joins' => [
         //     'addresses' => ['churches.address_id', 'addresses.id'],
-        //     'profile_media' => ['churches.profile_media_id', 'profile_media.id'],
         //     'users' => ['churches.user_id', 'users.id'],
         // ],
     ];

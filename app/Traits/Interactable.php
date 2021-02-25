@@ -15,7 +15,6 @@ use App\Like;
 use App\Church;
 use App\Comment;
 use App\Event;
-use App\ProfileMedia;
 use App\Society;
 use App\VideoPost;
 use Illuminate\Http\Request;

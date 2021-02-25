@@ -20,7 +20,6 @@ class SocietyController extends Controller
             'church_id' => 'integer|exists:churches,id',
             'parent_id' => 'nullable|integer',
             'closed' => 'nullable|boolean',
-            'profile_media_id' => 'integer|exists:profile_media,id',
             'hierarchy_group_id'=> 'nullable|integer|exists:hierarchy_groups,id',
         ]);
 
@@ -52,7 +51,6 @@ class SocietyController extends Controller
             'church_id' => 'integer|exists:churches,id',
             'parent_id' => 'nullable|integer',
             'closed' => 'nullable|boolean',
-            'profile_media_id' => 'integer|exists:profile_media,id',
             'hierarchy_group_id'=> 'nullable|integer|exists:hierarchy_groups,id',
         ]);
 
@@ -98,7 +96,7 @@ class SocietyController extends Controller
         }
 
         $query = $request['q'];
-        $societies = Society::with('churches')->with('profileMedia');
+        $societies = Society::with('churches');
         if($query){
             $societies = $societies->search($query);
         }

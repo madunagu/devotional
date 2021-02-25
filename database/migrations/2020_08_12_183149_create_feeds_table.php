@@ -20,7 +20,6 @@ class CreateFeedsTable extends Migration
             $table->enum('postable_type', ['user', 'church', 'society']);
             $table->integer('postable_id');
             // $table->string('name')->nullable();
-            // $table->integer('profile_media_id')->nullable();
             // $table->string('src_url')->nullable();
             $table->integer('parentable_id');
             $table->timestamps();

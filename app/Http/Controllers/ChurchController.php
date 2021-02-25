@@ -28,7 +28,6 @@ class ChurchController extends Controller
             'parent_id' => 'nullable|integer|exists:churches,id',
             'leader_id' => 'nullable|integer|exists:users,id',
             'address_id' => 'nullable|integer|exists:addresses,id',
-            'profile_media_id' => 'nullable|integer|exists:profile_media,id',
             'description' => 'nullable|string'
         ], $validationMessages);
 
@@ -66,7 +65,6 @@ class ChurchController extends Controller
             'parent_id' => 'nullable|integer|exists:churches,id',
             'leader_id' => 'nullable|integer|exists:users,id',
             'address_id' => 'nullable|integer|exists:addresses,id',
-            'profile_media_id' => 'nullable|integer|exists:profile_media,id',
             'description' => 'nullable|string'
         ], $validationMessages);
 
@@ -98,7 +96,6 @@ class ChurchController extends Controller
             ->with('leader')
             ->with('user')
             ->with('addresses')
-            ->with('profileMedia')
             ->withCount([
                 'likes',
                 'likes as liked' => function (Builder $query) use ($userId) {
@@ -141,7 +138,7 @@ class ChurchController extends Controller
         $hq = $request['hq'];
         // parent_id  is set when searching through the children of a particular mother church
         $parent_id = (int)$request['parent_id'];
-        $churches = Church::with('addresses')->with('profileMedia');
+        $churches = Church::with('addresses');
         if ($query) {
             // $churches = $churches->search($query);
             $churches = $churches->search($query);
