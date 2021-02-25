@@ -16,14 +16,6 @@ class ImageController extends Controller
 
     public function create(Request $request)
     {
-        $validator =  Validator::make($request->all(), [
-            'photos' => 'required',
-            'photos.*' => 'mimes:jpg,png,gif'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 422);
-        }
 
         $userId = Auth::user()->id;
         $data = [];
