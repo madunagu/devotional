@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 use Validator;
 
+use Intervention\Image\ImageManagerStatic as ImageManager;
 use App\Image;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -28,19 +30,36 @@ class ImageController extends Controller
 
         if ($request->hasfile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $name = time() . '.' . $photo->extension();
-                $photoSrc =  'images/full/';
-                $ss = $photo->getClientOriginalName();
+                $name = time() . '.' . $photo->getClientOriginalExtension();
                 Storage::putFileAs('public/images/full', $photo, $name);
-                // $image = Image::find(1)->resizeImage($photo, ['width' => 120, 'crop' => true]);
-                // $image->uploadImage();
-                $image = Image::create(['full_url' => $photoSrc . $name, 'avatar_url' => $ss, 'user_id' => $userId]);
+                $image_resize = ImageManager::make($photo->getRealPath());
+
+                $image_resize->resize(500, 500);
+                $image_resize->save('images/replacer');
+                $save = Storage::putFileAs("public/images/large", new File('images/replacer'), $name);
+
+                $image_resize->resize(200, 200);
+                $image_resize->save('images/replacer');
+                $save = Storage::putFileAs("public/images/medium", new File('images/replacer'), $name);
+
+                $image_resize->resize(100, 100);
+                $image_resize->save('images/replacer');
+
+                $save = Storage::putFileAs("public/images/small", new File('images/replacer'), $name);
+
+                $image = Image::create([
+                    'photo' => $photo,
+                    'full' => 'images/full/' . $name,
+                    'large' => 'images/large/' . $name,
+                    'medium' => 'images/medium/' . $name,
+                    'small' => 'images/small/' . $name,
+                    'user_id' => $userId
+                ]);
+
                 $data[] = $image;
             }
         }
 
-
-        // $result = Image::insert($data);
 
         if ($data) {
             return response()->json(['data' => $data], 201);

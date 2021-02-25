@@ -198,7 +198,7 @@ class AudioPostController extends Controller
     public function related(Request $request)
     {
 
-        $audio = AudioPost::find($request['id']);
+        $audio = AudioPost::find((int)$request['id']);
         //TODO: here use search plugin to list advanced related
         $names = explode(' ', $audio->name);
         $audia = AudioPost::where('name', 'like', $audio->name);

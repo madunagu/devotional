@@ -15,11 +15,10 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('large_url');
-            $table->string('medium_url');
-            $table->string('small_url');
-            $table->string('avatar_url');
-            $table->string('full_url');
+            $table->string('large');
+            $table->string('medium');
+            $table->string('small');
+            $table->string('full');
             $table->string('user_id');
             $table->timestamps();
         });

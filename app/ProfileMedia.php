@@ -10,7 +10,7 @@ use QCod\ImageUp\HasImageUploads;
 class ProfileMedia extends Model
 {
     protected $table = 'profile_media';
-    use SoftDeletes, HasImageUploads;
+    use SoftDeletes;
 
     protected $fillable = ['logo_url', 'profile_image_url', 'background_image_url', 'color_choice', 'user_id'];
 

@@ -8,9 +8,6 @@ use QCod\ImageUp\HasImageUploads;
 
 class Image extends Model
 {
-    use HasImageUploads;
-
-    protected $autoUploadImages = false;
 
     protected $fillable = [
         'full',
