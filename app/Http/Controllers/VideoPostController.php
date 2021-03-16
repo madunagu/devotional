@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 use Google\Cloud\Speech\V1\SpeechClient;
@@ -15,6 +16,7 @@ use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 use App\VideoPost;
 use App\Http\Resources\AudioPostCollection;
 use App\Traits\Interactable;
+use App\VideoSrc;
 
 class VideoPostController extends Controller
 {
@@ -25,7 +27,7 @@ class VideoPostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'string|required|max:255',
-            'src_url' => 'string|required|max:255',
+            // 'src_url' => 'string|required|max:255',
             'full_text' => 'nullable|string',
             'description' => 'nullable|string|max:255',
             'author_id' => 'nullable|integer|exists:users,id',
@@ -34,6 +36,8 @@ class VideoPostController extends Controller
             'length' => 'nullable|integer',
             'language' => 'nullable|string',
             'address_id' => 'nullable|integer|exists:addresses,id',
+            'video' => 'required',
+            'video.*' => 'mimes:mp4,mkv,avi,mov'
         ]);
 
         if ($validator->fails()) {
@@ -42,11 +46,19 @@ class VideoPostController extends Controller
 
         $data = collect($request->all())->toArray();
         $data['uploader_id'] = Auth::user()->id;
-        $video = VideoPost::create($data);
+        $video  = $request['video'];
+        // $videoFile = Storage($video);
+        //TODO: parse the video extension from the base64encoded file
+        $name = time() . '.mp4';
+        $videoPost = VideoPost::create($data);
+        $fileMoved = Storage::put('public/video/full' . $name, $video);
 
-        $interacted = $this->saveRelated($data, $video);
+        $pp = '/storage/video/full/' . $name;
+        $src = VideoSrc::create(['src' => $pp, 'quality' => 1, 'size' => 22333, 'video_post_id' => $videoPost->id,]);
+
+        $interacted = $this->saveRelated($data, $videoPost);
         //obtain length,size and details of audio
-        $result = $this->getTrackDetails($video);
+        $result = $this->getTrackDetails($videoPost);
         $result = $this->getTrackFullText($result);
 
         if ($result) {
@@ -116,7 +128,7 @@ class VideoPostController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'integer|required|exists:audio_posts,id',
             'name' => 'string|required|max:255',
-            'src_url' => 'string|required|max:255',
+            // 'src_url' => 'string|required|max:255',
             'full_text' => 'nullable|string',
             'description' => 'nullable|string|max:255',
             'author_id' => 'nullable|integer|exists:users,id',
@@ -152,7 +164,7 @@ class VideoPostController extends Controller
     {
         $id = (int)$request->route('id');
         $userId = Auth::user()->id;
-        if ($audio = VideoPost::with(['comments', 'images', 'author', 'user', 'churches', 'addresses'])
+        if ($audio = VideoPost::with(['srcs', 'comments', 'images', 'author', 'user', 'churches', 'addresses'])
             ->withCount([
                 'comments',
                 'likes',

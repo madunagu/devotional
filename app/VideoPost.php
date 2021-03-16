@@ -89,4 +89,9 @@ class VideoPost extends Model
     {
         return $this->morphToMany('App\Church', 'churchable');
     }
+
+    public function srcs()
+    {
+        return $this->hasMany('App\VideoSrc', 'video_post_id');
+    }
 }

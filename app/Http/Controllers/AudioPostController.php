@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Validator;
@@ -13,6 +14,7 @@ use Google\Cloud\Speech\V1\RecognitionConfig;
 use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 
 use App\AudioPost;
+use App\AudioSrc;
 use App\Traits\Interactable;
 use App\Http\Resources\AudioPostCollection;
 use wapmorgan\Mp3Info\Mp3Info;
@@ -27,7 +29,7 @@ class AudioPostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'string|required|max:255',
-            'src_url' => 'string|required|max:255',
+            // 'src_url' => 'string|required|max:255',
             'full_text' => 'nullable|string',
             'description' => 'nullable|string|max:255',
             'author_id' => 'nullable|integer|exists:users,id',
@@ -36,6 +38,8 @@ class AudioPostController extends Controller
             'length' => 'nullable|integer',
             'language' => 'nullable|string',
             'address_id' => 'nullable|integer|exists:addresses,id',
+            'audio' => 'required',
+            'audio.*' => 'mimes:mp3,wmv,amr,m4a'
         ]);
 
         if ($validator->fails()) {
@@ -46,12 +50,19 @@ class AudioPostController extends Controller
         $data = collect($request->all())->toArray();
 
         $data['uploader_id'] = Auth::user()->id;
+        $audio  = $request['audio'];
+        //TODO: parse the audio extension from the base64encoded file
+        $name = time() . '.mp3';
+        $fileMoved = Storage::put('public/audio/full' . $name, $audio);
+        $path = 'storage/audio/full' . $name;
+
         $audio = AudioPost::create($data);
         $interacted = $this->saveRelated($data, $audio);
         //obtain length,size and details of audio
-        $audio = $this->getTrackDetails($audio);
+        $res = $this->getTrackDetails($audio);
         $audio = $this->getTrackFullText($audio);
 
+        $src = AudioSrc::create(['refresh_rate' => '20', 'bitrate' => '120', 'src' => $path, 'size' => $res['size'], 'format' => 'mp3', 'audio_post_id' => $audio->id,]);
 
         if ($audio) {
             return response()->json(['data' => true], 201);
@@ -60,14 +71,14 @@ class AudioPostController extends Controller
         }
     }
 
-    public function getTrackDetails(AudioPost $audio): AudioPost
+    public function getTrackDetails(AudioPost $audio): array
     {
         if (!empty($request['audio'])) {
             $audioInfo = new Mp3Info($request['audio']);
-            $audio->length = $audioInfo->duration;
-            $audio->size = $audioInfo->audioSize;
+            $length = $audioInfo->duration;
+            $size = $audioInfo->audioSize;
         }
-        return $audio;
+        return ['size' => $size, 'length' => $length];
     }
 
     public function getTrackFullText(AudioPost $audio): AudioPost
@@ -107,7 +118,7 @@ class AudioPostController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'integer|required|exists:audio_posts,id',
             'name' => 'string|required|max:255',
-            'src_url' => 'string|required|max:255',
+            // 'src_url' => 'string|required|max:255',
             'full_text' => 'nullable|string',
             'description' => 'nullable|string|max:255',
             'author_id' => 'nullable|integer|exists:users,id',
@@ -144,7 +155,7 @@ class AudioPostController extends Controller
     {
         $id = (int)$request->route('id');
         $userId = Auth::user()->id;
-        if ($audio = AudioPost::with(['comments', 'images', 'author', 'user', 'churches', 'addresses'])
+        if ($audio = AudioPost::with(['srcs','comments', 'images', 'author', 'user', 'churches', 'addresses'])
             ->withCount([
                 'comments',
                 'likes',
@@ -182,7 +193,8 @@ class AudioPostController extends Controller
         }
 
         $query = $request['q'];
-        $audia = AudioPost::with('author', 'user');
+        $audia = AudioPost::with('author', 'user','srcs')
+            ->orderBy('audio_posts.created_at', 'DESC');
         if ($query) {
             $audia = $audia->search($query);
         }
@@ -207,7 +219,7 @@ class AudioPostController extends Controller
         $data = $audia->with('author')
             ->whereNot('audio_posts.id', $audio->id)->paginate();
 
-            return response()->json($data);
+        return response()->json($data);
     }
 
 

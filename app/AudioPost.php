@@ -89,4 +89,9 @@ class AudioPost extends Model
     {
         return $this->morphToMany('App\Church', 'churchable');
     }
+
+    public function srcs()
+    {
+        return $this->hasMany('App\AudioSrc', 'audio_post_id');
+    }
 }

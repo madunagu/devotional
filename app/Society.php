@@ -42,9 +42,9 @@ class Society extends Model
         return $this->morphToMany('App\Church', 'churchable');
     }
 
-    public function HierarchyGroup()
+    public function hierarchies()
     {
-        return $this->belongsTo('App\HierarchyGroup');
+        return $this->morphToMany('App\Hierarchy', 'hierarchyable');
     }
 
     public function addresses()

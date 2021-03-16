@@ -40,6 +40,11 @@ class Event extends Model
         return $this->morphToMany('App\Address', 'addressable', 'addressables');
     }
 
+    public function hierarchies()
+    {
+        return $this->morphToMany('App\Hierarchy', 'hierarchyable');
+    }
+
     public function poster()
     {
         return $this->morphTo('poster');
@@ -78,11 +83,6 @@ class Event extends Model
     public function churches()
     {
         return $this->morphToMany('App\Church', 'churchable', 'churchables');
-    }
-
-    public function hierarchyGroups()
-    {
-        return $this->morphToMany('App\HierarchyGroup', 'hierarchyable', 'hierarchyables');
     }
 
     public function views()

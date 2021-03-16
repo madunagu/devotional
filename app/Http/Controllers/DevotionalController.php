@@ -126,7 +126,8 @@ class DevotionalController extends Controller
             'devotees as devoted' => function (Builder $query) use ($userId) {
                 $query->where('user_id', $userId);
             },
-        ]); //TODO: add participants to the search using heirarchies
+        ])
+        ->orderBy('devotionals.created_at', 'DESC'); //TODO: add participants to the search using heirarchies
         if (!empty($query)) {
             $events = $events->search($query);
         }

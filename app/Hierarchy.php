@@ -9,5 +9,5 @@ class Hierarchy extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['hierarchy_group_id','rank','position_name','position_slang','person_name','user_id'];
+    protected $fillable = ['rank','position_name','position_slang','person_name','user_id'];
 }

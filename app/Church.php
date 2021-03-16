@@ -48,14 +48,14 @@ class Church extends Model
         return $this->morphToMany('App\Address','addressable');
     }
 
+    public function hierarchies()
+    {
+        return $this->morphToMany('App\Hierarchy', 'hierarchyable');
+    }
+
     public function images()
     {
         return $this->morphToMany('App\Image', 'imageable', 'imageables');
-    }
-
-    public function hierarchyGroup()
-    {
-        return $this->belongsTo('App\HierarchyGroup');
     }
 
     public function leader()

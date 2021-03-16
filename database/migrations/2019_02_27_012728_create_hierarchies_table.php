@@ -15,7 +15,6 @@ class CreateHierarchiesTable extends Migration
     {
         Schema::create('hierarchies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('hierarchy_group_id');
             $table->integer('rank')->nullable();
             $table->string('position_name')->nullable();
             $table->string('position_slang')->nullable();
