@@ -14,7 +14,6 @@ class HierarchyController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hierarchy_group_id' => 'integer|exists:hierarchy_groups,id',
             'rank' => 'nullable|integer',
             'position_name'=> 'string|max:255',
             'position_slang' => 'nullable|string|max:255',

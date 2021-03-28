@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Validator;
 use App\User;
@@ -19,9 +20,13 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
+        if ($request['unassigned']) {
+            $request['email'] = Str::random(15);
+            $request['password'] = Str::random(15);
+        }
 
         $data = collect($request->all())->toArray();
-     
+
         $result = User::create($data);
 
         if ($result) {
