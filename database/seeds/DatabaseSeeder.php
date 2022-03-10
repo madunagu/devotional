@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
       $this->call(UserSeeder::class);
       $this->call(AddressSeeder::class);
-      $this->call(DefaultHierarchySeeder::class);
+      // $this->call(DefaultHierarchySeeder::class);
       $this->call(DevotionalSeeder::class);
       $this->call(ImageSeeder::class);
       $this->call(BiblePassageSeeder::class);
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
       $this->call(VideoPostSeeder::class);
       $this->call(AudioPostSeeder::class);
       $this->call(HierarchySeeder::class);
-      $this->call(HierarchyGroupSeeder::class);
+      // $this->call(HierarchyGroupSeeder::class);
       $this->call(FollowerSeeder::class);
       $this->call(FeedSeeder::class);
     }
